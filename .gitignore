@@ -1,4 +1,6 @@
 <<<<<<< HEAD
+#test restAPI
+*.rest
 # Logs
 logs
 *.log
