@@ -6,12 +6,12 @@ const appConfig = () => ({
     BASE_PATH:getEnv("BASE_PATH", "/api"),
     MONGO_URI: getEnv("MONGO_URI", "mongodb://localhost:27017/express-mongo"),
 
-    SESSION_SECRET: getEnv("SESSION_SECRET"),
-    SESSION_EXPIRE_IN: getEnv("SESSION_EXPIRE_IN"),
+    SESSION_SECRET: getEnv("SESSION_SECRET", "some_secret_key"),
+    SESSION_EXPIRE_IN: getEnv("SESSION_EXPIRE_IN", "1D"),
 
-    GOOGLE_CLIENT_ID: getEnv("GOOGLE_CLIENT_ID"),
-    GOOGLE_CLIENT_SECRET: getEnv("GOOGLE_CLIENT_SECRET"),
-    GOOGLE_CALLBACK_URL: getEnv("GOOGLE_CALLBACK_URL"),
+    GOOGLE_CLIENT_ID: getEnv("GOOGLE_CLIENT_ID","some_id"),
+    GOOGLE_CLIENT_SECRET: getEnv("GOOGLE_CLIENT_SECRET","some_secret"),
+    GOOGLE_CALLBACK_URL: getEnv("GOOGLE_CALLBACK_URL","some_url"),
 
     FRONTEND_ORIGIN: getEnv("FRONTEND_ORIGIN", "localhost"),
     FRONTEND_GOOGLE_CALLBACK_URL: getEnv("FRONTEND_GOOGLE_CALLBACK_URL","test"),
