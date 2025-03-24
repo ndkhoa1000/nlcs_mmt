@@ -1,14 +1,16 @@
-// index page
 import "dotenv/config";
 import express, {NextFunction,Request,Response } from "express";
 import cors from "cors";
-import session from "cookie-session";
+import session from "express-session";
 import { config } from "./config/app.config";
-import { request } from "http";
 import connectDatabase from "./config/database.config";
 import { HTTPSTATUS } from "./config/http.config";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
 import { asyncHandler } from "./middlewares/asyncHandler.middleware";
+
+import "./config/passport.config";
+import passport from "passport";
+import authRoutes from "./routes/auth.route";
 
 const app = express();
 const BASE_PATH = config.BASE_PATH;
@@ -18,13 +20,20 @@ app.use(express.urlencoded({extended:true}));
 app.use(
     session({
         name:"session",
-        keys:[config.SESSION_SECRET],
-        maxAge:24*60*60*1000,
+        resave:false,
+        saveUninitialized: false,
+        secret:config.SESSION_SECRET,
+        cookie: {
+        maxAge:24*60*60*1000, //24h
         secure: config.NODE_ENV === "production",
         httpOnly:true,
-        sameSite:"lax",
+        sameSite:"lax"
+        },
     })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(
     cors({
@@ -38,6 +47,9 @@ app.get('/', asyncHandler(async (req: Request, res: Response,next: NextFunction)
         });
     })
 );
+
+app.use(`${BASE_PATH}/auth`, authRoutes);
+
 //error Handler should be the last middleware
 app.use(errorHandler); 
 app.listen(config.PORT, async() => {
