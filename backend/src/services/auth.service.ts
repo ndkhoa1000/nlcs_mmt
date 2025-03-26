@@ -67,11 +67,11 @@ export const loginOrCreateAccountService = async (data:{
             await member.save({session});
 
             user.currentWorkspace = workspace._id as mongoose.Types.ObjectId;
+            await user.save({session});
             await session.commitTransaction();
             console.log('commit transaction...');
             session.endSession();
             console.log('session end. Finish.');
-
             return {user};
         } catch (error) {
             console.log("Error during session...", error)
@@ -134,6 +134,7 @@ export const registerService = async (body: {
             await member.save({session});
 
             user.currentWorkspace = workspace._id as mongoose.Types.ObjectId;
+            await user.save({session});
             await session.commitTransaction();
             console.log('commit transaction...');
             session.endSession();
