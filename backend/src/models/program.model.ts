@@ -1,24 +1,24 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface ProjectDocument extends Document {
+export interface ProgramDocument extends Document {
     name: string;
     description: string | null;
-    emoji: string;
-    workspace: mongoose.Types.ObjectId;
+    organization: mongoose.Types.ObjectId;
+    documents: Array<string>;
     createBy: mongoose.Types.ObjectId;
     createAt: Date;
     updateAt: Date;
 }
-const projectSchema = new Schema<ProjectDocument>(
+const programSchema = new Schema<ProgramDocument>(
     {
         name: { type: String, required: true ,trim: true},
         description: { type: String, required: false, default: null },
-        emoji: { type: String, required: false,trim: true, default:"📅" },
-        workspace: {
+        organization: {
             type: Schema.Types.ObjectId,
-            ref: "Workspace",
+            ref: "Organization",
             required: true,
         },
+        documents : { type: [String], required: false, default: [] },
         createBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
     },
     {
@@ -29,5 +29,5 @@ const projectSchema = new Schema<ProjectDocument>(
     }
 );
 
-const ProjectModel = mongoose.model<ProjectDocument>("Project", projectSchema);
-export default ProjectModel;
+const ProgramModel = mongoose.model<ProgramDocument>("Program", programSchema);
+export default ProgramModel;

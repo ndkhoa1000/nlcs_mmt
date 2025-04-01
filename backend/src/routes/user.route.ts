@@ -2,12 +2,9 @@ import { Router } from "express";
 import { getCurrentUserController } from "../controllers/user.controller";
 
 const userRoutes = Router();
-// crud: list - getOne - post - update - delete
+// get current
 userRoutes.get("/current", getCurrentUserController);
-userRoutes.get("/user",);
-userRoutes.get("/user/:id");
-// userRoutes.post("/user");
-userRoutes.put("/user/:id");
-userRoutes.delete("/user/:id")
-
-export default userRoutes;
+//get other profile
+//edit current profile
+//delete user -> hidden user -> delete account -> delete all member role of other orgs..
+export default userRoutes;  

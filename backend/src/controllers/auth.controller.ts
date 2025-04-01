@@ -10,15 +10,15 @@ import passport from 'passport';
 // OAuth
 export const googleLoginCallback = asyncHandler(
     async(req: Request, res: Response) => {
-    const currentWorkspace = req.user?.currentWorkspace;
+    const currentOrganization = req.user?.currentOrganization;
 
-    if (!currentWorkspace){
+    if (!currentOrganization){
         return res.redirect(
             `${config.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure` 
         )
     }
     return res.redirect(
-        `${config.FRONTEND_ORIGIN}/workspace/${currentWorkspace}`
+        `${config.FRONTEND_ORIGIN}/organization/${currentOrganization}`
     )
 })
 

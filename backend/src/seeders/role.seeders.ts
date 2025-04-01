@@ -42,5 +42,5 @@ const seedRoles = async () => {
 }
 
 seedRoles().catch((error) => {
-    console.log('error running seedRoles script', error);
+    console.log('error running seedRoles script:', error);
 })

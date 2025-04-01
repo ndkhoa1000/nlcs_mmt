@@ -2,7 +2,7 @@ import "dotenv/config"
 import mongoose from "mongoose";
 import UserModel from "../models/user.model";
 import accountModel from "../models/account.model";
-import workspaceModel from "../models/workspace.model";
+import organizationModel from "../models/organization.model";
 import MemberModel from "../models/member.model";
 import RoleModel from "../models/roles-permission.model";
 import { Roles } from "../enums/roles.enums";
@@ -19,7 +19,6 @@ export const loginOrCreateAccountService = async (data:{
         const {provider,displayName,providerId,picture,email} = data;
         
         // create an account -> create user -> create account (ref: user)
-        // create workspace( ref: user) ->  create member (ref: workspace, user)
 
         const session = await mongoose.startSession();
         console.log('start Session...')
@@ -46,28 +45,6 @@ export const loginOrCreateAccountService = async (data:{
             });
             await account.save({session});
 
-            const workspace = new workspaceModel({
-                name: `${user.name}'s workspace`,
-                description:`Workspace created for ${user.name}`,
-                owner: user._id,
-            });
-            await workspace.save({session});
-
-            const RoleOwner = await RoleModel.findOne(
-                {name: Roles.OWNER})
-                .session(session);    
-            if(!RoleOwner){
-                throw new NotFoundException("Owner Role not found.");
-            }
-            const member = new MemberModel({
-                userId: user._id,
-                workspaceId: workspace._id,
-                role: RoleOwner._id,
-            });
-            await member.save({session});
-
-            user.currentWorkspace = workspace._id as mongoose.Types.ObjectId;
-            await user.save({session});
             await session.commitTransaction();
             console.log('commit transaction...');
             session.endSession();
@@ -113,37 +90,12 @@ export const registerService = async (body: {
             });
             await account.save({session});
 
-            const workspace = new workspaceModel({
-                name: `${user.name}'s workspace`,
-                description:`Workspace created for ${user.name}`,
-                owner: user._id,
-            });
-            await workspace.save({session});
-
-            const RoleOwner = await RoleModel.findOne(
-                {name: Roles.OWNER})
-                .session(session);    
-            if(!RoleOwner){
-                throw new NotFoundException("Owner Role not found.");
-            }
-            const member = new MemberModel({
-                userId: user._id,
-                workspaceId: workspace._id,
-                role: RoleOwner._id,
-            });
-            await member.save({session});
-
-            user.currentWorkspace = workspace._id as mongoose.Types.ObjectId;
-            await user.save({session});
             await session.commitTransaction();
             console.log('commit transaction...');
             session.endSession();
             console.log('session end. Finish.');
 
-            return {  
-                userId: user._id,
-                workspaceId: workspace._id 
-            };
+            return { user };
         } catch (error) {
             console.log("Error during session...", error)
             await session.abortTransaction()
@@ -180,5 +132,3 @@ export const verifyUserService = async({
     };
     return user.omitPassword();
 }
-// local login service
-// logout

@@ -7,11 +7,19 @@ export interface UserDocument extends Document{
     email: string;
     password: string;
     profilePicture: string | null;
+
+    DateOfBirth: Date | null;
+    phoneNumber: string | null;
+    EmergencyContact: string |null;
+    Address: string |null;
+    Skills: string | null;
+    totalVolunteerHours: number;
+    
     isActive: Boolean;
     lastLogin: Date | null;
     createAt: Date;
     updateAt: Date;
-    currentWorkspace: mongoose.Types.ObjectId | null;
+    currentOrganization: mongoose.Types.ObjectId | null;
     comparePassword (value: string): Promise<boolean>;
     omitPassword(): Omit<UserDocument, "password">;    
 }
@@ -21,13 +29,21 @@ const userSchema = new Schema<UserDocument>({
     email: {type:String, required:true, unique:true, trim: true, lowercase: true},
     password: {type:String, required:true},
     profilePicture: {type:String, default:null},
+
+    DateOfBirth:{type:Date, default:null},
+    phoneNumber:{type:String, default:null},
+    Address:{type:String, default:null},
+    Skills:{type:String, default:null},
+    EmergencyContact:{type:String, default:null},
+    totalVolunteerHours:{type:Number, default:0},
+
     isActive: {type:Boolean, default:true},
     lastLogin: {type:Date, default:null},
     createAt: {type:Date, default:Date.now},
     updateAt: {type:Date, default:Date.now},
-    currentWorkspace: {
+    currentOrganization: {
         type:Schema.Types.ObjectId, 
-        ref:"Workspace", 
+        ref:"Organization", 
         default:null
     },
 },

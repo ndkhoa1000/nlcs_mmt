@@ -2,8 +2,8 @@ import UserModel from "../models/user.model"
 import { BadRequestException } from "../utils/appError";
 
 export const getCurrentUserService = async(userId: string) => {
-    const user = await UserModel.findById(userId)
-    .populate("currentWorkspace")
+const user = await UserModel.findById(userId)
+    .populate("currentOrganization")
     .select("-password");
     if(!user){
         throw new BadRequestException("User not found.");
