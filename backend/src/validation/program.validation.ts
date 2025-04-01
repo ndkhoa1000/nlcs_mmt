@@ -8,7 +8,7 @@ import {
 
 export const createProgramSchema = z.object({
     name: nameSchema,
-    description: descriptionSchema,
+    description: descriptionSchema.optional(),
     organization: objectIdSchema,
     documents: stringArraySchema
 });

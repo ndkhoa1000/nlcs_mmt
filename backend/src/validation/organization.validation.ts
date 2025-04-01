@@ -13,14 +13,13 @@ import {
 
 export const createOrganizationSchema = z.object({
     name: nameSchema,
-    description: descriptionSchema,
-    mission: z.string().trim().optional(),
-    address: addressSchema.optional(),
+    address: addressSchema,
     phoneNumber: phoneSchema,
+    description: descriptionSchema.optional(),
+    mission: z.string().trim().optional(),
     email: emailSchema.optional(),
-    website: urlSchema,
-    socialMediaLink: stringArraySchema,
-    establishedDate: dateSchema
+    website: urlSchema.optional(),
+    socialMediaLink: stringArraySchema.optional(),
 });
 
 export const updateOrganizationSchema = createOrganizationSchema.partial();

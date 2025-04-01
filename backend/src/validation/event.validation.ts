@@ -12,7 +12,7 @@ import { eventCategories } from "../enums/eventCategories.enums";
 export const createEventSchema = z.object({
     eventCode: z.string().trim().min(1),
     title: nameSchema,
-    description: descriptionSchema,
+    description: descriptionSchema.optional(),
     program: objectIdSchema,
     organization: objectIdSchema,
     category: z.array(z.nativeEnum(eventCategories)).optional(),
