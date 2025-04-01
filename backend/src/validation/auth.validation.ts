@@ -1,15 +1,13 @@
 import { z } from "zod";
+import { nameSchema, emailSchema, passwordSchema } from "./common.validation";
 
-export const emailSchema = z.string().trim()
-.email("Invalid email address").min(1).max(255);
-
-export const passwordSchema = z.string().trim().min(8).max(255);
 export const registerSchema = z.object({
-    name: z.string().trim().min(1).max(255),
-    email:emailSchema,
-    password:passwordSchema
+    name: nameSchema,
+    email: emailSchema,
+    password: passwordSchema
 });
-export const LoginSchema = z.object({
+
+export const loginSchema = z.object({
     email: emailSchema,
     password: passwordSchema
 });
