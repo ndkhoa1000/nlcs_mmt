@@ -1,8 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import { asyncHandler } from "../middlewares/asyncHandler.middleware";
 import { config } from '../config/app.config';
-import { LoginSchema, registerSchema } from '../validation/auth.validation';
-import { register } from 'module';
+import { registerSchema } from '../validation/auth.validation';
 import { HTTPSTATUS } from '../config/http.config';
 import { registerService } from '../services/auth.service';
 import passport from 'passport';

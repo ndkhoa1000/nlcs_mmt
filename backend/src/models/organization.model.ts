@@ -1,3 +1,4 @@
+
 import mongoose, { Document, Schema, SchemaType } from "mongoose";
 import { generateInviteCode } from "../utils/uuid";
 
@@ -24,11 +25,11 @@ export interface OrganizationDocument extends Document {
 const organizationSchema = new Schema<OrganizationDocument>(
     {
         name: { type: String, required: true, trim: true },
+        address: { type: String, required: true, trim: true },
+        phoneNumber: { type: String, required: true, trim: true },
         description: { type: String, required: false, default: "" },
         mission: { type: String, required: false, default: "" },
         logo: { type: String, default: null },
-        address: { type: String, required: true, trim: true },
-        phoneNumber: { type: String, required: true, trim: true },
         email: { type: String, required: true, trim: true, lowercase: true },
         website: { type: String, required: false, default: null },
         socialMediaLink: { type: [String], required: false, default: [] },
