@@ -30,7 +30,3 @@ export const createEventSchema = z.object({
 });
 
 export const updateEventSchema = createEventSchema.partial();
-
-export const eventIdSchema = z.object({
-    id: objectIdSchema
-});

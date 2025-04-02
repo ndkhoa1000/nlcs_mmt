@@ -24,10 +24,6 @@ export const createOrganizationSchema = z.object({
 
 export const updateOrganizationSchema = createOrganizationSchema.partial();
 
-export const organizationIdSchema = z.object({
-    id: objectIdSchema
-});
-
 export const changeRoleSchema = z.object({
     userId: objectIdSchema,
     roleId: objectIdSchema

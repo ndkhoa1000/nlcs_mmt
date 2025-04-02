@@ -14,7 +14,3 @@ export const createProgramSchema = z.object({
 });
 
 export const updateProgramSchema = createProgramSchema.partial();
-
-export const programIdSchema = z.object({
-    id: objectIdSchema
-});

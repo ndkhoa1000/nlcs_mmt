@@ -17,7 +17,3 @@ export const updateAttendanceSchema = z.object({
     hoursContributed: z.number().nonnegative().optional(),
     feedback: z.string().trim().optional()
 });
-
-export const attendanceIdSchema = z.object({
-    id: objectIdSchema
-});

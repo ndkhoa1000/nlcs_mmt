@@ -7,14 +7,8 @@ export const createMemberSchema = z.object({
     role: objectIdSchema
 });
 
-export const updateMemberSchema = z.object({
-    role: objectIdSchema
-});
+export const updateMemberSchema =objectIdSchema;
 
 export const inviteCodeSchema = z.object({
     inviteCode: z.string().trim().min(1, { message: "Invite code is required" })
-});
-
-export const memberIdSchema = z.object({
-    id: objectIdSchema
 });
