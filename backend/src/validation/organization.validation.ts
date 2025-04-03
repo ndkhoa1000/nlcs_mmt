@@ -17,18 +17,16 @@ export const createOrganizationSchema = z.object({
     phoneNumber: phoneSchema,
     description: descriptionSchema.optional(),
     mission: z.string().trim().optional(),
+    logo: urlSchema.optional(),
     email: emailSchema.optional(),
     website: urlSchema.optional(),
     socialMediaLink: stringArraySchema.optional(),
+    establishedDate: dateSchema.optional(),
 });
 
 export const updateOrganizationSchema = createOrganizationSchema.partial();
 
-export const organizationIdSchema = z.object({
-    id: objectIdSchema
-});
-
 export const changeRoleSchema = z.object({
-    userId: objectIdSchema,
-    roleId: objectIdSchema
+    memberId: objectIdSchema,
+    roleId: objectIdSchema,
 });

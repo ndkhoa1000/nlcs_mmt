@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { 
     nameSchema, 
-    emailSchema, 
     phoneSchema, 
     addressSchema,
     dateSchema,
@@ -20,8 +19,4 @@ export const updateUserSchema = z.object({
 
 export const updateOrganizationPreferenceSchema = z.object({
     currentOrganization: objectIdSchema.nullable()
-});
-
-export const userIdSchema = z.object({
-    id: objectIdSchema
 });
