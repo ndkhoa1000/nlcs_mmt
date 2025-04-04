@@ -9,6 +9,7 @@ import MemberModel from "../models/member.model";
 import ProgramModel from "../models/program.model";
 import EventModel from "../models/event.model";
 import AttendanceModel from "../models/attendance.model";
+import { EventStatusEnum } from "../enums/event.enums";
 
 // NOTE: may not need transaction for simple service.
 export const createOrganizationService = async(
@@ -190,7 +191,39 @@ export const changeOrganizationMemberRoleService = async(
 // event: total events, event status, avg volunteer participation
 // program: total programs, program engagement.
 export const getOrganizationAnalyticsService = async(userId: string, orgId: string) => {
-    const organization = OrganizationModel.findOne({_id: orgId});
+    const currentDate = new Date();
+
+    const totalsProgram = await ProgramModel.countDocuments({organization: orgId});
+    const totalEvent = await EventModel.countDocuments({organization:orgId});
+    const totalPendingEvent = await EventModel.countDocuments({
+        organization:orgId,
+        dueDate: {$lt: currentDate},
+        status: EventStatusEnum.PENDING
+    });
+    const totalActiveEvent = await EventModel.countDocuments({
+        organization:orgId,
+        dueDate: {$lt: currentDate},
+        status: EventStatusEnum.ACTIVE
+    });
+    const totalCompleteEvent = await EventModel.countDocuments({
+        organization:orgId,
+        dueDate: {$lt: currentDate},
+        status: EventStatusEnum.COMPLETED
+    });
+    const totalPostponedEvent = await EventModel.countDocuments({
+        organization:orgId,
+        dueDate: {$lt: currentDate},
+        status: EventStatusEnum.POSTPONED
+    });
+    const analysis = {
+        totalsProgram,
+        totalEvent,
+        totalPendingEvent,
+        totalActiveEvent,
+        totalCompleteEvent,
+        totalPostponedEvent,
+    };
+    return {analysis};
 }
 
 export const deleteOrganizationByIdService = async(userId: string, orgId: string) =>{
