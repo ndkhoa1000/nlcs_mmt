@@ -3,10 +3,9 @@ import { EventStatusEnumType, EventPriorityEnumType, EventStatusEnum, EventPrior
 import { eventCategories } from "../enums/eventCategories.enums";
 
 export interface EventDocument extends Document {
-    eventCode: String;
     title: string;
     description: string |null;
-    program:mongoose.Types.ObjectId;
+    program:mongoose.Types.ObjectId | null;
     organization: mongoose.Types.ObjectId;
     category: Array<string>;
     
@@ -29,10 +28,9 @@ export interface EventDocument extends Document {
 }
 const eventSchema = new Schema<EventDocument>(
     {
-        eventCode: { type: String, required: true ,trim: true},
         title: { type: String, required: true ,trim: true},
         description: { type: String, required: false, default: null },
-        program: {type: Schema.Types.ObjectId, ref: "Program", required: true},
+        program: {type: Schema.Types.ObjectId, ref: "Program", required: false},
         organization: { type: Schema.Types.ObjectId, ref: "Organization", required: true},
         category: { type: [String], enums: Object.values(eventCategories), required: false, default: [] },
         location: { type: String, required: true, trim: true },
@@ -63,6 +61,7 @@ const eventSchema = new Schema<EventDocument>(
             enum: Object.values(EventPriorityEnum), 
             default: EventPriorityEnum.MEDIUM
         },
+        cohost: { type: [Schema.Types.ObjectId], ref: "Organization", required: false, default: []},
         assignedTo: { type: [Schema.Types.ObjectId], ref: "User", required: false, default: []},
         createBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
     },
