@@ -2,7 +2,16 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../middlewares/asyncHandler.middleware";
 import { HTTPSTATUS } from "../config/http.config";
 import { changeRoleSchema, createOrganizationSchema, updateOrganizationSchema } from "../validation/organization.validation";
-import { changeOrganizationMemberRoleService, createOrganizationService, deleteOrganizationByIdService, getAllOrganizationsUserIsMemberService, getOrganizationAnalyticsService, getOrganizationByIdService, getOrganizationMembersService, updateOrganizationByIdService } from "../services/organization.service";
+import { 
+    changeOrganizationMemberRoleService, 
+    createOrganizationService, 
+    deleteOrganizationByIdService, 
+    getAllOrganizationsUserIsMemberService,
+    getOrganizationAnalyticsService, 
+    getOrganizationByIdService, 
+    getOrganizationMembersService, 
+    updateOrganizationByIdService } 
+    from "../services/organization.service";
 import { objectIdSchema } from "../validation/common.validation";
 import { getMemberRoleInWorkspaceService } from "../services/member.service";
 import { roleGuard } from "../utils/roleGuard";
@@ -87,10 +96,11 @@ export const getOrganizationAnalyticsController = asyncHandler(
         const {role} = await getMemberRoleInWorkspaceService(userId,orgId);
         roleGuard(role, [Permissions.VIEW_ONLY]);
 
-        // const {organization} = await getOrganizationAnalyticsService(userId, orgId);
+        const {analysis} = await getOrganizationAnalyticsService(userId, orgId);
 
         return res.status(HTTPSTATUS.OK).json({
-            message: "Organization updated.",
+            message: "fetch analysis successfully.",
+            analysis
         });
     }
 );
@@ -129,3 +139,4 @@ export const deleteOrganizationByIdController = asyncHandler(
         });
     }
 );
+

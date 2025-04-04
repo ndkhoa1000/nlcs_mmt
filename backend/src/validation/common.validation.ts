@@ -10,7 +10,7 @@ export const phoneSchema = z.string().trim().min(10, { message: "Phone number mu
 export const addressSchema = z.string().trim().min(1, { message: "Address is required" }).max(500);
 
 // Common date fields
-export const dateSchema = z.coerce.date().nullable();
+export const dateSchema = z.coerce.date();
 
 // Common ID fields
 export const objectIdSchema = z.string().trim().min(1, { message: "ID is required" });
