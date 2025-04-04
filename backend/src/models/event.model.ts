@@ -55,7 +55,7 @@ const eventSchema = new Schema<EventDocument>(
             type: String, 
             required: true, 
             enum: Object.values(EventStatusEnum), 
-            default: EventStatusEnum.ON_PREPARE,
+            default: EventStatusEnum.PENDING,
         },
         priority: { 
             type: String, 
