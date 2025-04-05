@@ -16,7 +16,3 @@ export const updateUserSchema = z.object({
     Skills: z.string().trim().optional(),
     EmergencyContact: z.string().trim().optional(),
 }).partial();
-
-export const updateOrganizationPreferenceSchema = z.object({
-    currentOrganization: objectIdSchema.nullable()
-});
