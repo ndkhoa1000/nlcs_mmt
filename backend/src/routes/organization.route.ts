@@ -1,26 +1,35 @@
 import { Router } from "express";
-import { changeOrganizationMemberRoleController, 
+import { 
   createOrganizationController, 
   getAllOrganizationsUserIsMemberController,
   getOrganizationAnalyticsController, 
   getOrganizationByIdController, 
   getOrganizationMembersController, 
   updateOrganizationByIdController,
-  deleteOrganizationByIdController, 
+  deleteOrganizationByIdController 
 } from "../controllers/organization.controller";
+import { 
+  banMemberController, 
+  changeOrganizationMemberRoleController,
+  joinOrganizationController, 
+  leaveOrganizationController 
+} from "../controllers/member.controller";
 
 const organizationRoutes = Router();
 
+// Core organization routes
 organizationRoutes.post("/create/new", createOrganizationController);
 organizationRoutes.get("/all", getAllOrganizationsUserIsMemberController);
 organizationRoutes.get("/:id", getOrganizationByIdController);
-organizationRoutes.get("/members/:id", getOrganizationMembersController);
 organizationRoutes.get("/analytics/:id", getOrganizationAnalyticsController);
 organizationRoutes.put("/update/:id", updateOrganizationByIdController);
-organizationRoutes.put(
-  "/change/member/role/:id",
-  changeOrganizationMemberRoleController
-);
 organizationRoutes.delete("/delete/:id", deleteOrganizationByIdController);
 
-export default organizationRoutes
+// Member-related routes
+organizationRoutes.post("/join", joinOrganizationController); // via invite code
+organizationRoutes.get("/:id/member/all", getOrganizationMembersController);
+organizationRoutes.put("/:id/member/role/change", changeOrganizationMemberRoleController);
+organizationRoutes.delete("/:orgId/member/:id/ban", banMemberController);
+organizationRoutes.delete("/:orgId/leave", leaveOrganizationController); 
+
+export default organizationRoutes;

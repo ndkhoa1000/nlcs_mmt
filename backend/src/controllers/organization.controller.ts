@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../middlewares/asyncHandler.middleware";
 import { HTTPSTATUS } from "../config/http.config";
-import { changeRoleSchema, createOrganizationSchema, updateOrganizationSchema } from "../validation/organization.validation";
+import { createOrganizationSchema, updateOrganizationSchema } from "../validation/organization.validation";
 import { 
-    changeOrganizationMemberRoleService, 
     createOrganizationService, 
     deleteOrganizationByIdService, 
     getAllOrganizationsUserIsMemberService,
@@ -12,8 +11,8 @@ import {
     getOrganizationMembersService, 
     updateOrganizationByIdService } 
     from "../services/organization.service";
-import { objectIdSchema } from "../validation/common.validation";
-import { getMemberRoleInWorkspaceService } from "../services/member.service";
+import {getMemberRoleInWorkspaceService} from "../services/member.service";
+    import { objectIdSchema } from "../validation/common.validation";
 import { roleGuard } from "../utils/roleGuard";
 import { Permissions } from "../enums/roles.enums";
 
@@ -54,7 +53,6 @@ export const getOrganizationByIdController = asyncHandler(
     }
 );
 export const getOrganizationMembersController = asyncHandler(
-    //REVIEW: need to test on postman.
     async (req: Request, res: Response) => {
         const userId = String(req.user?._id);
         const orgId = objectIdSchema.parse(req.params.id);
@@ -65,7 +63,7 @@ export const getOrganizationMembersController = asyncHandler(
         const {members, roles} = await getOrganizationMembersService(orgId);
 
         return res.status(HTTPSTATUS.OK).json({
-            message: "Fetch",
+            message: "Organization members fetched successfully",
             members,
             roles,
         });
@@ -87,7 +85,7 @@ export const updateOrganizationByIdController = asyncHandler(
         });
     }
 );
-// TODO: comeback when finish other resource.
+
 export const getOrganizationAnalyticsController = asyncHandler(
     async (req: Request, res: Response) => {
         const userId = String(req.user?._id);
@@ -105,23 +103,6 @@ export const getOrganizationAnalyticsController = asyncHandler(
     }
 );
 
-export const changeOrganizationMemberRoleController = asyncHandler(
-    async (req: Request, res: Response) => {
-        const userId = String(req.user?._id);
-        const orgId = objectIdSchema.parse(req.params.id);
-        const {memberId, roleId} = changeRoleSchema.parse(req.body);
-
-        const {role} = await getMemberRoleInWorkspaceService(userId,orgId);
-        roleGuard(role, [Permissions.CHANGE_MEMBER_ROLE]);
-
-        const {member} = await changeOrganizationMemberRoleService(orgId, memberId, roleId);
-
-        return res.status(HTTPSTATUS.OK).json({
-            message: "member's role updated.",
-            member
-        });
-    }
-);
 
 // REVIEW: delete Org will delete everything related to Org, finish other models to perform fully delete.
 export const deleteOrganizationByIdController = asyncHandler(

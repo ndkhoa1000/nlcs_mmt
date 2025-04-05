@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 import OrganizationModel from "../models/organization.model";
 import {BadRequestException, ConflictException, NotFoundException } from "../utils/appError";
@@ -119,13 +118,14 @@ export const getOrganizationByIdService = async (orgId: string) => {
 export const getOrganizationMembersService = async (orgId: string) => {
     //NOTE: fetch all member from the organization
 
-    const members = MemberModel.find({orgId})
-    .populate("userId", "name email profilePicture -password")
-    .populate("role", "name");
+    const members = await MemberModel.find({orgId})
+        .populate("userId", "name email profilePicture")
+        .populate("role", "name")
+        .lean(); 
 
-    const roles = RoleModel.find({}, {name:1, _id:1})
-    .select("-permission")
-    .lean();
+    const roles = await RoleModel.find({}, {name:1, _id:1})
+        .select("-permission")
+        .lean();
 
     return {members, roles};
 }
@@ -164,25 +164,6 @@ export const updateOrganizationByIdService = async (
     console.log(`Update organization ${organization._id} successfully`);
 
     return {organization}
-}
-
-// REVIEW: test changeMemberRole with Postman when finish joinOrg API(member)
-export const changeOrganizationMemberRoleService = async(
-    orgId: string, 
-    memberId: string,
-    roleId: string,
-) => {
-    const role = await RoleModel.findById(roleId);
-    if(!role)
-        throw new NotFoundException("Role not found.")
-    
-    const member = await MemberModel.findOne({userId:memberId, orgId:orgId})
-    if(!member)
-        throw new NotFoundException("Member not found.")
-
-    member.role = role || member.role;
-    await member.save();
-    return {member}
 }
 
 // NOTE: need program and event for data analysis.
