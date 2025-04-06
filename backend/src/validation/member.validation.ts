@@ -7,9 +7,7 @@ export const createMemberSchema = z.object({
     role: objectIdSchema
 });
 
-export const updateMemberSchema = z.object({
-    role: objectIdSchema
-});
+export const updateMemberSchema =objectIdSchema;
 
 // Updated validation to be more specific
 export const inviteCodeSchema = z.object({

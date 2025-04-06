@@ -15,3 +15,4 @@ export const updateAttendanceSchema = z.object({
     hoursContributed: z.number().nonnegative(),
     feedback: z.string().trim()
 }).partial();
+
