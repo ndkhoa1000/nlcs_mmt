@@ -4,6 +4,9 @@ export interface ProgramDocument extends Document {
     name: string;
     description: string | null;
     organization: mongoose.Types.ObjectId;
+    startDate:Date | null;
+    endDate: Date |null;
+    sponsors: Array<string>;
     documents: Array<string>;
     createBy: mongoose.Types.ObjectId;
     createAt: Date;
@@ -18,6 +21,9 @@ const programSchema = new Schema<ProgramDocument>(
             ref: "Organization",
             required: true,
         },
+        startDate: { type: Date, required: false, default: null },
+        endDate: { type: Date, required: false, default: null },
+        sponsors: { type: [String], required: false, default: null },
         documents : { type: [String], required: false, default: [] },
         createBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
     },

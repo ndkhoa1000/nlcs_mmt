@@ -72,12 +72,15 @@ export const logoutController = asyncHandler(
         };
 
         req.session.destroy((err) => {
-            console.log('Session destruction failed:', err);
-            return res.status(HTTPSTATUS.INTERNAL_SERVER_ERROR)
-            .json({error:"Cannot complete logout, please try again later."})
+            if(err){
+                console.log('Session destruction failed:', err);
+                return res.status(HTTPSTATUS.INTERNAL_SERVER_ERROR)
+                .json({error:"Cannot complete logout, please try again later."})
+            }
+            res.clearCookie('connect.sid'); //test clear cookies
+            return res.status(HTTPSTATUS.OK).json("logout successfully.")
         });
-        res.clearCookie('connect.sid'); //test clear cookies
-        return res.status(HTTPSTATUS.OK).json("logout successfully.")
+        
     })
 })
 // get current user profile
