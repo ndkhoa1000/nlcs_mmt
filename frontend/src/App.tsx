@@ -1,7 +1,6 @@
 import {
   AuthBindings,
   Authenticated,
-  GitHubBanner,
   Refine,
 } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
@@ -44,6 +43,7 @@ import { Login } from "./pages/login";
 import { parseJwt } from "./utils/parse-jwt";
 
 const axiosInstance = axios.create();
+//NOTE: apply token to every route
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (config.headers) {
@@ -54,6 +54,8 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 function App() {
+  // NOTE: AuthBindings is deprecated, use AuthProvider and declare login, logout there, 
+  // NOTE: but logic still good, reuse on useLogin, useLogout hooks
   const authProvider: AuthBindings = {
     login: async ({ credential }: CredentialResponse) => {
       const profileObj = credential ? parseJwt(credential) : null;
@@ -132,7 +134,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <AntdApp>
