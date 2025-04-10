@@ -41,7 +41,7 @@ export default function EditWorkspaceForm() {
             className="text-[17px] tracking-[-0.16px] dark:text-[#fcfdffef] font-semibold mb-1.5
            text-center sm:text-left"
           >
-            Edit Workspace
+            Chỉnh Sửa Tổ Chức
           </h1>
         </div>
         <Form {...form}>
@@ -101,7 +101,7 @@ export default function EditWorkspaceForm() {
               type="submit"
             >
               {/* {false && <Loader className="animate-spin" />} */}
-              Update Workspace
+              Cập Nhật Tổ Chức
             </Button>
           </form>
         </Form>

@@ -40,17 +40,17 @@ export function WorkspaceSwitcher() {
     {
       id: "my-wo8483727",
       name: "Acme Inc",
-      plan: "Free",
+      plan: "Miễn phí",
     },
     {
       id: "ym28483727",
-      name: "Acme Corp.",
-      plan: "Free",
+      name: "Phật Đảng Corp.",
+      plan: "Miễn phí",
     },
     {
       id: "cc88483727",
       name: "Evil Corp.",
-      plan: "Free",
+      plan: "Miễn phí",
     },
   ];
 
@@ -81,7 +81,7 @@ export function WorkspaceSwitcher() {
   return (
     <>
       <SidebarGroupLabel className="w-full justify-between pr-0">
-        <span>Workspaces</span>
+        <span>Tổ chức cuả bạn</span>
         <button
           onClick={onOpen}
           className="flex size-5 items-center justify-center rounded-full border"
@@ -118,7 +118,7 @@ export function WorkspaceSwitcher() {
               sideOffset={4}
             >
               <DropdownMenuLabel className="text-xs text-muted-foreground">
-                Workspaces
+                Tổ chức
               </DropdownMenuLabel>
               {workspaces.map((workspace) => (
                 <DropdownMenuItem
@@ -147,7 +147,7 @@ export function WorkspaceSwitcher() {
                   <Plus className="size-4" />
                 </div>
                 <div className="font-medium text-muted-foreground">
-                  Add workspace
+                  Thêm Tổ Chức
                 </div>
               </DropdownMenuItem>
             </DropdownMenuContent>

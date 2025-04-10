@@ -4,17 +4,17 @@ const WorkspaceAnalytics = () => {
   const workspaceList = [
     {
       id: "total-task",
-      title: "Total Task",
+      title: "Tổng Số Sự Kiện",
       value: 20,
     },
     {
-      id: "overdue-task",
-      title: "Overdue Task",
+      id: "1234",
+      title: "Số Sự Kiện Trì Hoãn",
       value: 0,
     },
     {
       id: "completed-task",
-      title: "Completed Task",
+      title: "Số Sự Kiện Hoàn Thành",
       value: 4,
     },
   ];

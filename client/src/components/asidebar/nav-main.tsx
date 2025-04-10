@@ -30,23 +30,23 @@ export function NavMain() {
 
   const items: ItemType[] = [
     {
-      title: "Dashboard",
+      title: "Trang Chính",
       url: `/workspace/${workspaceId}`,
       icon: LayoutDashboard,
     },
     {
-      title: "Tasks",
+      title: "Sự kiện",
       url: `/workspace/${workspaceId}/tasks`,
       icon: CheckCircle,
     },
     {
-      title: "Members",
+      title: "Thành viên",
       url: `/workspace/${workspaceId}/members`,
       icon: Users,
     },
 
     {
-      title: "Settings",
+      title: "Cài đặt",
       url: `/workspace/${workspaceId}/settings`,
       icon: Settings,
     },

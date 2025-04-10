@@ -22,18 +22,17 @@ const LogoutDialog = (props: {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Are you sure you want to log out?</DialogTitle>
+            <DialogTitle>Bạn có muốn đăng xuất?</DialogTitle>
             <DialogDescription>
-              This will end your current session and you will need to log in
-              again to access your account.
+              Điều này sẽ kết thúc phiên hiện tại của bạn và bạn sẽ cần đăng nhập lại để truy cập tài khoản.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button type="button" onClick={handleLogout}>
-              Sign out
+              Đăng xuất
             </Button>
             <Button type="button" onClick={() => setIsOpen(false)}>
-              Cancel
+              Hủy
             </Button>
           </DialogFooter>
         </DialogContent>

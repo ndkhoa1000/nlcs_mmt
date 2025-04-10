@@ -36,11 +36,11 @@ const Header = () => {
             <BreadcrumbItem className="hidden md:block text-[15px]">
               {pageHeading ? (
                 <BreadcrumbLink asChild>
-                  <Link to={`/workspace/${workspaceId}`}>Dashboard</Link>
+                  <Link to={`/workspace/${workspaceId}`}>Trang chính</Link>
                 </BreadcrumbLink>
               ) : (
                 <BreadcrumbPage className="line-clamp-1 ">
-                  Dashboard
+                  Trang chính
                 </BreadcrumbPage>
               )}
             </BreadcrumbItem>

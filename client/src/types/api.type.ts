@@ -10,6 +10,7 @@ export type loginType = { email: string; password: string };
 export type LoginResponseType = {
   message: string;
   user: {
+    currentWorkspace: any;
     _id: string;
     currentOrganization: string;
   };

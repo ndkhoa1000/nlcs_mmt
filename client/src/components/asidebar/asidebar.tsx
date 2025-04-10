@@ -83,15 +83,15 @@ const Asidebar = () => {
                     >
                       <Avatar className="h-8 w-8 rounded-full">
                         <AvatarFallback className="rounded-full border border-gray-500">
-                          CN
+                          DK
                         </AvatarFallback>
                       </Avatar>
                       <div className="grid flex-1 text-left text-sm leading-tight">
                         <span className="truncate font-semibold">
-                          Chile Brown
+                          Dang Khoa
                         </span>
                         <span className="truncate text-xs">
-                          example@gmail.com
+                          dangkhoa@gmail.com
                         </span>
                       </div>
                       <EllipsisIcon className="ml-auto size-4" />
@@ -107,7 +107,7 @@ const Asidebar = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => setIsOpen(true)}>
                       <LogOut />
-                      Log out
+                      Đăng xuất
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

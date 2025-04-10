@@ -37,19 +37,19 @@ export function NavProjects() {
   const projects = [
     {
       id: "pro-383dh",
-      name: "Design Engineering",
-      emoji: "📊",
+      name: "Chủ nhật xanh",
+      emoji: "🌳",
       url: `/workspace/${workspaceId}/project/:pro-383dh`,
     },
     {
       id: "p383dh",
-      name: "Sales & Marketing",
-      emoji: "📈",
+      name: "Tháng thanh niên",
+      emoji: "📅",
       url: `/workspace/${workspaceId}/project/:p383dh`,
     },
     {
       id: "pro-wwhe",
-      name: "Travel",
+      name: "Giáo dục văn hoá",
       emoji: "✈️",
       url: `/workspace/${workspaceId}/project/:pro-wwhe`,
     },
@@ -62,7 +62,7 @@ export function NavProjects() {
     <>
       <SidebarGroup className="group-data-[collapsible=icon]:hidden">
         <SidebarGroupLabel className="w-full justify-between pr-0">
-          <span>Projects</span>
+          <span>Chương Trình</span>
           <button
             onClick={onOpen}
             type="button"
@@ -75,8 +75,7 @@ export function NavProjects() {
           {projects?.length === 0 ? (
             <div className="pl-3">
               <p className="text-xs text-muted-foreground">
-                There is no projects in this Workspace yet. Projects you create
-                will show up here.
+                Hiện chưa có chương trình nào trong tổ chức. Chương trình bạn tạo sẽ hiện ở đây.
               </p>
               <Button
                 variant="link"
@@ -84,7 +83,7 @@ export function NavProjects() {
                 className="h-0 p-0 text-[13px] underline font-semibold mt-4"
                 onClick={onOpen}
               >
-                Create a project
+                Tạo chương trình
                 <ArrowRight />
               </Button>
             </div>
@@ -104,7 +103,7 @@ export function NavProjects() {
                     <DropdownMenuTrigger asChild>
                       <SidebarMenuAction showOnHover>
                         <MoreHorizontal />
-                        <span className="sr-only">More</span>
+                        <span className="sr-only">Thêm</span>
                       </SidebarMenuAction>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
@@ -116,7 +115,7 @@ export function NavProjects() {
                         onClick={() => navigate(`${projectUrl}`)}
                       >
                         <Folder className="text-muted-foreground" />
-                        <span>View Project</span>
+                        <span>Xem chương trình</span>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
@@ -124,7 +123,7 @@ export function NavProjects() {
                         onClick={() => onOpenDialog(item)}
                       >
                         <Trash2 className="text-muted-foreground" />
-                        <span>Delete Project</span>
+                        <span>DXoá chương trình</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -137,7 +136,7 @@ export function NavProjects() {
             <SidebarMenuItem>
               <SidebarMenuButton className="text-sidebar-foreground/70">
                 <MoreHorizontal className="text-sidebar-foreground/70" />
-                <span>More</span>
+                <span>Thêm</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           )}
