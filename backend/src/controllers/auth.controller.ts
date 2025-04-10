@@ -11,13 +11,14 @@ export const googleLoginCallback = asyncHandler(
     async(req: Request, res: Response) => {
     const currentOrganization = req.user?.currentOrganization;
 
-    if (!currentOrganization){
+    if (currentOrganization){
         return res.redirect(
-            `${config.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure` 
+            `${config.FRONTEND_ORIGIN}/organization/${currentOrganization}`
         )
     }
+    // TODO: return user to dashboard or event page. (fix later on the frontend)
     return res.redirect(
-        `${config.FRONTEND_ORIGIN}/organization/${currentOrganization}`
+        `${config.FRONTEND_ORIGIN}/dashboard`
     )
 })
 
