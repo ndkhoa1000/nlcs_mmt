@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -28,11 +28,14 @@ import { toast } from "@/hooks/use-toast";
 // import { error } from "console";
 
 const SignIn = () => {
+  const [searchParams] = useSearchParams();
+  const returnUrl = searchParams.get("returnUrl");
+
   const navigate = useNavigate();
+
   const {mutate, isPending} = useMutation({
     mutationFn: loginMutationFn,
   });
-// TODO: implement inviteCode later (12:30) 2/2
   const formSchema = z.object({
     email: z.string().trim().email("Invalid email address").min(1, {
       message: "Workspace name is required",
@@ -56,7 +59,9 @@ const SignIn = () => {
     mutate(values, {
       onSuccess: (data) => {
         const user = data.user;
-        navigate(`workspace/${user.currentOrganization}`);
+        console.log("user: ",user);
+        const decodedUrl = returnUrl ? decodeURIComponent(returnUrl) : null;
+        navigate(decodedUrl || `/workspace/${user.currentWorkspace}`);
       },
       onError: (error) => {
         toast({
