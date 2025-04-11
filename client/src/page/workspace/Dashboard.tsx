@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecentProjects from "@/components/workspace/project/recent-projects";
 import RecentTasks from "@/components/workspace/task/recent-tasks";
 import RecentMembers from "@/components/workspace/member/recent-members";
-const WorkspaceDashboard = () => {
+const OrganizationDashboard = () => {
   const { onOpen } = useCreateProjectDialog();
   return (
     <main className="flex flex-1 flex-col py-4 md:pt-3">
@@ -54,4 +54,4 @@ const WorkspaceDashboard = () => {
   );
 };
 
-export default WorkspaceDashboard;
+export default OrganizationDashboard;

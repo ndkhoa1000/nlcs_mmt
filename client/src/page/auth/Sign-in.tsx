@@ -61,7 +61,7 @@ const SignIn = () => {
         const user = data.user;
         console.log("user: ",user);
         const decodedUrl = returnUrl ? decodeURIComponent(returnUrl) : null;
-        navigate(decodedUrl || `/workspace/${user.currentWorkspace}`);
+        navigate(decodedUrl || `/organization/${user.currentOrganization}`);
       },
       onError: (error) => {
         toast({
