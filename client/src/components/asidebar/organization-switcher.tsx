@@ -40,23 +40,6 @@ export function WorkspaceSwitcher() {
 
   const [activeOrg, setActiveOrg] = React.useState<OrgType>();
 
-  const organizations_tmp = [
-    {
-      id: "my-wo8483727",
-      name: "Acme Inc",
-      plan: "Free",
-    },
-    {
-      id: "ym28483727",
-      name: "Acme Corp.",
-      plan: "Free",
-    },
-    {
-      id: "cc88483727",
-      name: "Evil Corp.",
-      plan: "Free",
-    },
-  ];
   const { data, isPending } = useQuery({
     queryKey: ["userOrgs"],
     queryFn: getAllOrganizationsUserIsMemberQueryFn,
@@ -77,7 +60,6 @@ export function WorkspaceSwitcher() {
         if (!orgId) navigate(`/organization/${organization._id}`);
       };
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orgId, organizations, navigate]);
 
   const onSelect = (org: OrganizationType) => {
