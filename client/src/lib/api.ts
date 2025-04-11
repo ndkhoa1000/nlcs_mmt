@@ -1,5 +1,5 @@
 import API from "./axios-client";
-import { CurrentUserResponseType, LoginResponseType, loginType, registerType } from "@/types/api.type";
+import { AllOrganizationsResponseType, CurrentUserResponseType, LoginResponseType, loginType, registerType } from "@/types/api.type";
 
 export const loginMutationFn = async (data:loginType): Promise<LoginResponseType> => {
   const response = await API.post("/auth/login", data);
@@ -18,34 +18,38 @@ export const getCurrentUserQueryFn =
     return response.data;
   };
 
-//********* WORKSPACE ****************
+//********* ORGANIZATION ****************
 //************* */
-export const getAllWorkspacesUserIsMemberQueryFn = () => {};
+export const getAllOrganizationsUserIsMemberQueryFn = 
+async(): Promise<AllOrganizationsResponseType> => {
+  const response = await API.get(`/organization/all`);
+  return response.data;
+};
 
-export const createWorkspaceMutationFn = async () => {};
+export const createOrganizationMutationFn = async () => {};
 
-export const editWorkspaceMutationFn = async () => {};
+export const editOrganizationMutationFn = async () => {};
 
-export const getWorkspaceByIdQueryFn = async () => {};
+export const getOrganizationByIdQueryFn = async () => {};
 
 
-export const getWorkspaceAnalyticsQueryFn = async () => {};
+export const getOrganizationAnalyticsQueryFn = async () => {};
 
-export const changeWorkspaceMemberRoleMutationFn = async () => {};
+export const changeOrganizationMemberRoleMutationFn = async () => {};
 
-export const deleteWorkspaceMutationFn = async () => {};
+export const deleteOrganizationMutationFn = async () => {};
 
-//*******MEMBER ****************
+//******* MEMBER ****************
 
-export const invitedUserJoinWorkspaceMutationFn = async () => {};
+export const invitedUserJoinOrganizationMutationFn = async () => {};
 
 //********* */
-//********* PROJECTS
+//********* PROGRAM
 export const createProjectMutationFn = async () => {};
 
 export const editProjectMutationFn = async () => {};
 
-export const getProjectsInWorkspaceQueryFn = async () => {};
+export const getProjectsInOrganizationQueryFn = async () => {};
 
 export const getProjectByIdQueryFn = async () => {};
 
@@ -53,7 +57,7 @@ export const getProjectAnalyticsQueryFn = async () => {};
 
 export const deleteProjectMutationFn = async () => {};
 
-//*******TASKS ********************************
+//******* EVENT ********************************
 //************************* */
 
 export const createTaskMutationFn = async () => {};

@@ -29,11 +29,11 @@ import { WorkspaceSwitcher } from "./workspace-switcher";
 import { NavMain } from "./nav-main";
 import { NavProjects } from "./nav-projects";
 import { Separator } from "../ui/separator";
-import useWorkspaceId from "@/hooks/use-workspace-id";
+import useOrgId from "@/hooks/use-org-id";
 
 const Asidebar = () => {
   const { open } = useSidebar();
-  const workspaceId = useWorkspaceId();
+  const workspaceId = useOrgId();
 
   const [isOpen, setIsOpen] = useState(false);
 

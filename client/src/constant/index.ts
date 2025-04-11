@@ -1,34 +1,57 @@
-export const TaskStatusEnum = {
-  BACKLOG: "BACKLOG",
-  TODO: "TODO",
-  IN_PROGRESS: "IN_PROGRESS",
-  IN_REVIEW: "IN_REVIEW",
-  DONE: "DONE",
+export const EventStatusEnum = {
+  PENDING: "PENDING",
+  ACTIVE: "ACTIVE",
+  COMPLETED: "COMPLETED",
+  CANCELLED: "CANCELLED",
+  POSTPONED: "POSTPONED",
 } as const;
 
-export const TaskPriorityEnum = {
+export const EventPriorityEnum = {
   LOW: "LOW",
   MEDIUM: "MEDIUM",
   HIGH: "HIGH",
+  URGENT: "URGENT",
 } as const;
-export type TaskStatusEnumType = keyof typeof TaskStatusEnum;
-export type TaskPriorityEnumType = keyof typeof TaskPriorityEnum;
+
+export const eventCategoriesEnums = {
+  CLIMATE:'CLIMATE',
+  ENVIRONMENT:'ENVIRONMENT', 
+  SOCIAL:'SOCIAL',
+  EDUCATION:'EDUCATION',
+  HEALTH:'HEALTH',
+  CULTURE:'CULTURE',
+  ANIMALS:'ANIMALS',
+  COMMUNITY:'COMMUNITY',
+  SPORTS:'SPORTS',
+  OTHER:'OTHER'
+} as const;
+
+export type eventCategoryEnumType = keyof typeof eventCategoriesEnums;
+export type EventStatusEnumType = keyof typeof EventStatusEnum;
+export type EventPriorityEnumType = keyof typeof EventPriorityEnum;
 
 export const Permissions = {
-  CREATE_WORKSPACE: "CREATE_WORKSPACE",
-  DELETE_WORKSPACE: "DELETE_WORKSPACE",
-  EDIT_WORKSPACE: "EDIT_WORKSPACE",
-  MANAGE_WORKSPACE_SETTINGS: "MANAGE_WORKSPACE_SETTINGS",
-  ADD_MEMBER: "ADD_MEMBER",
-  CHANGE_MEMBER_ROLE: "CHANGE_MEMBER_ROLE",
-  REMOVE_MEMBER: "REMOVE_MEMBER",
-  CREATE_PROJECT: "CREATE_PROJECT",
-  EDIT_PROJECT: "EDIT_PROJECT",
-  DELETE_PROJECT: "DELETE_PROJECT",
-  CREATE_TASK: "CREATE_TASK",
-  EDIT_TASK: "EDIT_TASK",
-  DELETE_TASK: "DELETE_TASK",
-  VIEW_ONLY: "VIEW_ONLY",
+  CREATE_ORGANIZATION: "CREATE_ORGANIZATION",
+    DELETE_ORGANIZATION: "DELETE_ORGANIZATION",
+    EDIT_ORGANIZATION: "EDIT_ORGANIZATION",
+    MANAGE_ORGANIZATION_SETTINGS: "MANAGE_ORGANIZATION_SETTINGS",
+    LEAVE_ORGANIZATION: "LEAVE_ORGANIZATION",
+    
+    ADD_MEMBER: "ADD_MEMBER",
+    CHANGE_MEMBER_ROLE: "CHANGE_MEMBER_ROLE",
+    REMOVE_MEMBER: "REMOVE_MEMBER",
+
+    CREATE_PROGRAM: "CREATE_PROGRAM",
+    EDIT_PROGRAM: "EDIT_PROGRAM",
+    DELETE_PROGRAM: "DELETE_PROGRAM",
+    VIEW_PROGRAM: "VIEW_PROGRAM",
+
+    CREATE_EVENT: "CREATE_EVENT",
+    EDIT_EVENT: "EDIT_EVENT",
+    DELETE_EVENT: "DELETE_EVENT",
+    MANAGE_EVENT:"MANAGE_EVENT",
+
+    VIEW_ONLY: "VIEW_ONLY",
 } as const;
 
 export type PermissionType = keyof typeof Permissions;

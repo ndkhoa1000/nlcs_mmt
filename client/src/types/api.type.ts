@@ -2,15 +2,15 @@
 
 import {
   PermissionType,
-  TaskPriorityEnumType,
-  TaskStatusEnumType,
+  EventPriorityEnumType,
+  EventStatusEnumType,
 } from "@/constant";
 
+// AUTH TYPES
 export type loginType = { email: string; password: string };
 export type LoginResponseType = {
   message: string;
   user: {
-    currentWorkspace: string;
     _id: string;
     currentOrganization: string;
   };
@@ -28,16 +28,32 @@ export type UserType = {
   name: string;
   email: string;
   profilePicture: string | null;
-  isActive: true;
-  lastLogin: null;
-  createdAt: Date;
-  updatedAt: Date;
-  currentWorkspace: {
+  DateOfBirth: Date | null;
+  phoneNumber: string | null;
+  EmergencyContact: string | null;
+  Address: string | null;
+  Skills: string | null;
+  totalVolunteerHours: number;
+  isActive: boolean;
+  lastLogin: Date | null;
+  createAt: Date;
+  updateAt: Date;
+  currentOrganization: {
     _id: string;
     name: string;
     owner: string;
-    inviteCode: string;
-  };
+    inviteCode?: string;
+  } | null;
+};
+
+export type UpdateUserProfileType = {
+  name?: string;
+  profilePicture?: string | null;
+  DateOfBirth?: Date;
+  phoneNumber?: string;
+  Address?: string;
+  Skills?: string;
+  EmergencyContact?: string;
 };
 
 export type CurrentUserResponseType = {
@@ -45,94 +61,92 @@ export type CurrentUserResponseType = {
   user: UserType;
 };
 
-//******** */ WORLSPACE TYPES ****************
+export type UserProfileResponseType = {
+  message: string;
+  userProfile: UserType;
+};
+
+export type UpdateProfileResponseType = {
+  message: string;
+  user: UserType;
+};
+
+//******** */ ORGANIZATION TYPES ****************
 // ******************************************
-export type WorkspaceType = {
+export type OrganizationType = {
   _id: string;
   name: string;
-  description?: string;
+  address: string;
+  phoneNumber: string;
+  description?: string | null;
+  mission?: string | null;
+  logo?: string | null;
+  email?: string | null;
+  website?: string | null;
+  socialMediaLink?: string[] | null;
+  isVerified: boolean;
+  establishedDate?: Date | null;
   owner: string;
-  inviteCode: string;
+  inviteCode?: string;
+  createAt: Date;
+  updateAt: Date;
 };
 
-export type CreateWorkspaceType = {
+export type CreateOrganizationType = {
   name: string;
-  description: string;
+  address: string;
+  phoneNumber: string;
+  description?: string | null;
+  mission?: string | null;
+  logo?: string | null;
+  email?: string | null;
+  website?: string | null;
+  socialMediaLink?: string[] | null;
+  establishedDate?: Date | null;
 };
 
-export type EditWorkspaceType = {
-  workspaceId: string;
-  data: {
-    name: string;
-    description: string;
-  };
+export type EditOrganizationType = {
+  name?: string | null;
+  address?: string | null;
+  phoneNumber?: string | null;
+  description?: string | null;
+  mission?: string | null;
+  logo?: string | null;
+  email?: string | null;
+  website?: string | null;
+  socialMediaLink?: string[] | null;
+  establishedDate?: Date | null;
 };
 
-export type CreateWorkspaceResponseType = {
+export type CreateOrganizationResponseType = {
   message: string;
-  workspace: WorkspaceType;
+  organization: OrganizationType;
 };
 
-export type AllWorkspaceResponseType = {
+export type AllOrganizationsResponseType = {
   message: string;
-  workspaces: WorkspaceType[];
+  organizations: OrganizationType[];
 };
 
-export type WorkspaceWithMembersType = WorkspaceType & {
-  members: {
-    _id: string;
-    userId: string;
-    workspaceId: string;
-    role: {
-      _id: string;
-      name: string;
-      permissions: PermissionType[];
-    };
-    joinedAt: string;
-    createdAt: string;
-  }[];
+export type OrganizationWithMembersType = OrganizationType & {
+  member: MemberType[];
 };
 
-export type WorkspaceByIdResponseType = {
+
+export type OrganizationByIdResponseType = {
   message: string;
-  workspace: WorkspaceWithMembersType;
+  organization: OrganizationWithMembersType;
 };
 
-export type ChangeWorkspaceMemberRoleType = {
-  workspaceId: string;
-  data: {
-    roleId: string;
-    memberId: string;
-  };
-};
-
-export type AllMembersInWorkspaceResponseType = {
+export type OrganizationAnalyticsResponseType = {
   message: string;
-  members: {
-    _id: string;
-    userId: {
-      _id: string;
-      name: string;
-      email: string;
-      profilePicture: string | null;
-    };
-    workspaceId: string;
-    role: {
-      _id: string;
-      name: string;
-    };
-    joinedAt: string;
-    createdAt: string;
-  }[];
-  roles: RoleType[];
-};
-
-export type AnalyticsResponseType = {
-  message: string;
-  analytics: {
-    totalTasks: number;
-    overdueTasks: number;
-    completedTasks: number;
+  analysis: {
+    totalsProgram: number;
+    totalEvent: number;
+    totalPendingEvent: number;
+    totalActiveEvent: number;
+    totalCompleteEvent: number;
+    totalPostponedEvent: number;
   };
 };
 
@@ -145,127 +159,304 @@ export type PaginationType = {
   limit: number;
 };
 
+// ROLE & PERMISSION TYPES
 export type RoleType = {
   _id: string;
-  name: string;
+  name: PermissionType;
 };
 // *********** MEMBER ****************
 
-//******** */ PROJECT TYPES ****************
+export type MemberType = {
+  _id: string;
+  userId: {
+    _id: string;
+    name: string;
+    email: string;
+    profilePicture: string | null;
+  };
+  orgId: string;
+  role: {
+    _id: string;
+    name: PermissionType;
+  };
+  isApproved: boolean;
+  volunteerHours: number;
+  joinAt: Date;
+  createAt: Date;
+  updateAt: Date;
+};
+
+export type AllMembersInOrganizationResponseType = {
+  message: string;
+  members: MemberType[];
+  roles: RoleType[];
+};
+
+export type ChangeOrganizationMemberRoleType = {
+  orgId: string;
+  data: {
+    roleId: PermissionType;
+    memberId: string;
+  };
+};
+
+export type JoinOrganizationType = {
+  inviteCode: string;
+};
+
+//******** */ PROGRAM ****************
 //****************************************** */
-export type ProjectType = {
+export type ProgramType = {
   _id: string;
   name: string;
-  emoji: string;
-  description: string;
-  workspace: string;
-  createdBy: {
+  description: string | null;
+  organization: string;
+  startDate: Date | null;
+  endDate: Date | null;
+  sponsors: string[] | null;
+  documents: string[];
+  createBy: {
     _id: string;
     name: string;
-    profilePicture: string;
+    profilePicture: string | null;
   };
-  createdAt: string;
-  updatedAt: string;
+  createAt: Date;
+  updateAt: Date;
 };
 
-export type CreateProjectPayloadType = {
-  workspaceId: string;
-  data: {
-    emoji: string;
-    name: string;
-    description: string;
-  };
+
+export type CreateProgramType = {
+  name: string;
+  description?: string | null;
+  startDate: Date;
+  endDate: Date;
+  sponsors?: string[] | null;
+  documents?: string[] | null;
 };
 
-export type ProjectResponseType = {
-  message: "Project created successfully";
-  project: ProjectType;
-};
 
-export type EditProjectPayloadType = {
-  workspaceId: string;
-  projectId: string;
-  data: {
-    emoji: string;
-    name: string;
-    description: string;
-  };
-};
 
-//ALL PROJECTS IN WORKSPACE TYPE
-export type AllProjectPayloadType = {
-  workspaceId: string;
-  pageNumber?: number;
-  pageSize?: number;
-  keyword?: string;
-  skip?: boolean;
-};
-
-export type AllProjectResponseType = {
+export type ProgramResponseType = {
   message: string;
-  projects: ProjectType[];
-  pagination: PaginationType;
+  program: ProgramType;
 };
 
-// SINGLE PROJECT IN WORKSPACE TYPE
-export type ProjectByIdPayloadType = {
-  workspaceId: string;
-  projectId: string;
+
+export type UpdateProgramType = {
+  name?: string;
+  description?: string;
+  startDate?: Date;
+  endDate?: Date;
+  sponsors?: string[];
+  documents?: string[];
 };
 
-//********** */ TASK TYPES ************************
+
+export type ProgramAnalyticsResponseType = {
+  message: string;
+  analysis: {
+    totalEvent: number;
+    totalPendingEvent: number;
+    totalActiveEvent: number;
+    totalCompleteEvent: number;
+    totalPostponedEvent: number;
+  };
+};
+
+// NOTE: for pagination.
+// //ALL PROGRAM IN WORKSPACE TYPE
+// export type AllProgramPayloadType = {
+//   workspaceId: string;
+//   pageNumber?: number;
+//   pageSize?: number;
+//   keyword?: string;
+//   skip?: boolean;
+// };
+
+export type AllProgramsResponseType = {
+  message: string;
+  programs: ProgramType[];
+  // pagination: PaginationType; //NOTE for filter
+};
+
+// SINGLE PROGRAM IN ORG TYPE
+export type ProgramByIdPayloadType = {
+  orgId: string;
+  programId: string;
+};
+
+//********** */ EVENT TYPES ************************
 //************************************************* */
 
-export type CreateTaskPayloadType = {
-  workspaceId: string;
-  projectId: string;
-  data: {
-    title: string;
-    description: string;
-    priority: TaskPriorityEnumType;
-    status: TaskStatusEnumType;
-    assignedTo: string;
-    dueDate: string;
-  };
-};
-
-export type TaskType = {
+export type EventType = {
   _id: string;
   title: string;
-  description?: string;
-  project?: {
+  description: string | null;
+  program: {
     _id: string;
-    emoji: string;
     name: string;
-  };
-  priority: TaskPriorityEnumType;
-  status: TaskStatusEnumType;
+  } | null;
+  organization: string;
+  category: string[];
+  location: string;
+  status: EventStatusEnumType;
+  priority: EventPriorityEnumType;
   assignedTo: {
     _id: string;
     name: string;
     profilePicture: string | null;
-  } | null;
-  createdBy?: string;
-  dueDate: string;
-  taskCode: string;
-  createdAt?: string;
-  updatedAt?: string;
+  }[];
+  cohost: string[];
+  requiredVolunteer: number;
+  registeredVolunteer: number;
+  registrationDeadline: Date | null;
+  startTime: Date | null;
+  endTime: Date | null;
+  documents: string[];
+  needTraining: boolean;
+  createBy: {
+    _id: string;
+    name: string;
+    profilePicture: string | null;
+  };
+  createAt: Date;
+  updateAt: Date;
 };
 
-export type AllTaskPayloadType = {
-  workspaceId: string;
-  projectId?: string | null;
-  keyword?: string | null;
-  priority?: TaskPriorityEnumType | null;
-  status?: TaskStatusEnumType | null;
-  assignedTo?: string | null;
-  dueDate?: string | null;
-  pageNumber?: number | null;
-  pageSize?: number | null;
+export type CreateEventType = {
+  title: string;
+  description?: string | null;
+  program?: string | null;
+  category?: string[];
+  location: string;
+  status?: EventStatusEnumType;
+  priority?: EventPriorityEnumType;
+  assignedTo?: string[];
+  cohost?: string[];
+  requiredVolunteer: number;
+  registrationDeadline?: Date;
+  startTime?: Date | null;
+  endTime?: Date | null;
+  documents?: string[];
+  needTraining?: boolean;
 };
 
+export type UpdateEventType = {
+  title?: string;
+  description?: string | null;
+  program?: string | null;
+  category?: string[];
+  location?: string;
+  status?: string;
+  priority?: string;
+  assignedTo?: string[];
+  cohost?: string[];
+  requiredVolunteer?: number;
+  registrationDeadline?: Date;
+  startTime?: Date | null;
+  endTime?: Date | null;
+  documents?: string[];
+  needTraining?: boolean;
+};
+
+export type EventResponseType = {
+  message: string;
+  event: EventType;
+};
+
+export type AllEventsResponseType = {
+  message: string;
+  events: EventType[];
+};
+
+export type AllEventsInOrgResponseType = {
+  message: string;
+  events: EventType[];
+};
+// ATTENDANCE TYPES
+export type AttendanceType = {
+  _id: string;
+  eventId: {
+    _id: string;
+    title: string;
+    startTime: Date | null;
+    endTime: Date | null;
+    organization?: string;
+  };
+  userId: {
+    _id: string;
+    name: string;
+    email: string;
+    profilePicture: string | null;
+  };
+  isPresent: boolean;
+  checkInTime: Date | null;
+  checkOutTime: Date | null;
+  hoursContributed: number;
+  feedback: string | null;
+  createAt: Date;
+  updateAt: Date;
+};
+
+export type CreateAttendanceType = {
+  isPresent?: boolean;
+  checkInTime?: Date | null;
+  checkOutTime?: Date | null;
+  hoursContributed?: number;
+  feedback?: string | null;
+};
+
+export type UpdateAttendanceType = {
+  isPresent?: boolean;
+  checkInTime?: Date;
+  checkOutTime?: Date;
+  hoursContributed?: number;
+  feedback?: string;
+};
+
+export type AttendanceResponseType = {
+  message: string;
+  attendance: AttendanceType;
+};
+
+export type AllAttendancesResponseType = {
+  message: string;
+  attendances: AttendanceType[];
+};
+
+// ENUM RESPONSE TYPES
+export type EventStatusEnumsResponseType = {
+  message: string;
+  eventStatuses: string[];
+};
+
+export type EventPriorityEnumsResponseType = {
+  message: string;
+  eventPriorities: string[];
+};
+
+export type EventCategoriesEnumsResponseType = {
+  message: string;
+  eventCategories: string[];
+};
+
+// Mapping from old names to new structures for backward compatibility
+export type WorkspaceType = OrganizationType;
+export type WorkspaceWithMembersType = OrganizationWithMembersType;
+export type ProjectType = ProgramType;
+export type TaskType = EventType;
+
+// Compatibility types for frontend that may still use these
+export type AllWorkspaceResponseType = AllOrganizationsResponseType;
+export type WorkspaceByIdResponseType = OrganizationByIdResponseType;
+export type AnalyticsResponseType = OrganizationAnalyticsResponseType;
+export type AllProjectResponseType = {
+  message: string;
+  projects: ProgramType[];
+  pagination?: PaginationType;
+};
 export type AllTaskResponseType = {
   message: string;
-  tasks: TaskType[];
-  pagination: PaginationType;
+  tasks: EventType[];
+  pagination?: PaginationType;
 };

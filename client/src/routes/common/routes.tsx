@@ -1,7 +1,7 @@
 import GoogleOAuthFailure from "@/page/auth/GoogleOAuthFailure";
 import SignIn from "@/page/auth/Sign-in";
 import SignUp from "@/page/auth/Sign-up";
-import WorkspaceDashboard from "@/page/workspace/Dashboard";
+import OrganizationDashboard from "@/page/workspace/Dashboard";
 import Members from "@/page/workspace/Members";
 import ProjectDetails from "@/page/workspace/ProjectDetails";
 import Settings from "@/page/workspace/Settings";
@@ -16,11 +16,11 @@ export const authenticationRoutePaths = [
 ];
 
 export const protectedRoutePaths = [
-  { path: PROTECTED_ROUTES.WORKSPACE, element: <WorkspaceDashboard /> },
-  { path: PROTECTED_ROUTES.TASKS, element: <Tasks /> },
+  { path: PROTECTED_ROUTES.ORGANIZATION, element: <OrganizationDashboard /> },
+  { path: PROTECTED_ROUTES.EVENTS, element: <Tasks /> },
   { path: PROTECTED_ROUTES.MEMBERS, element: <Members /> },
   { path: PROTECTED_ROUTES.SETTINGS, element: <Settings /> },
-  { path: PROTECTED_ROUTES.PROJECT_DETAILS, element: <ProjectDetails /> },
+  { path: PROTECTED_ROUTES.PROGRAM_DETAILS, element: <ProjectDetails /> },
 ];
 
 export const baseRoutePaths = [
