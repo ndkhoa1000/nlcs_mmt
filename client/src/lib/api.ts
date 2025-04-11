@@ -20,6 +20,7 @@ export const getCurrentUserQueryFn =
 
 //********* WORKSPACE ****************
 //************* */
+export const getAllWorkspacesUserIsMemberQueryFn = () => {};
 
 export const createWorkspaceMutationFn = async () => {};
 
@@ -27,7 +28,6 @@ export const editWorkspaceMutationFn = async () => {};
 
 export const getWorkspaceByIdQueryFn = async () => {};
 
-export const getAllWorkspacesUserIsMemberQueryFn = () => {};
 
 export const getWorkspaceAnalyticsQueryFn = async () => {};
 

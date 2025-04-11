@@ -18,7 +18,7 @@ interface DataTableFilterToolbarProps {
   filters: Filters;
   setFilters: SetFilters;
 }
-
+// TODO: need to define pagination and filter in backend for apply it on frontend
 const TaskTable = () => {
   const param = useParams();
   const projectId = param.projectId as string;
