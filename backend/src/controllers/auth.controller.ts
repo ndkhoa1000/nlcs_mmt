@@ -16,7 +16,6 @@ export const googleLoginCallback = asyncHandler(
             `${config.FRONTEND_ORIGIN}/organization/${currentOrganization}`
         )
     }
-    // TODO: return user to dashboard or event page. (fix later on the frontend)
     return res.redirect(
         `${config.FRONTEND_ORIGIN}/organization/_`
     )
