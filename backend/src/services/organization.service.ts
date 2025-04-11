@@ -9,6 +9,7 @@ import ProgramModel from "../models/program.model";
 import EventModel from "../models/event.model";
 import AttendanceModel from "../models/attendance.model";
 import { EventStatusEnum } from "../enums/event.enums";
+import { ErrorCodeEnum } from "../enums/error-code.enums";
 
 // NOTE: may not need transaction for simple service.
 export const createOrganizationService = async(
@@ -101,18 +102,22 @@ export const getAllOrganizationsUserIsMemberService = async(userId: string) => {
 };
 
 export const getOrganizationByIdService = async (orgId: string) => {
-    const organization = await OrganizationModel.findById(orgId)
+    try{
+        const organization = await OrganizationModel.findById(orgId);
 
-    if (!organization)
-        throw new NotFoundException("Organization not found.");
+        if (!organization)
+            throw new NotFoundException("Organization not found.");
 
-    //NOTE: return org and its member
-    const member = await MemberModel.find({orgId})
-    .populate("role")
-    .exec();
-    const organizationWithMember = {...organization.toObject(), member};
-    
-    return {organization: organizationWithMember};
+        //NOTE: return org and its member
+        const member = await MemberModel.find({orgId})
+        .populate("role")
+        .exec();
+        const organizationWithMember = {...organization.toObject(), member};
+        
+        return {organization: organizationWithMember};
+    } catch(err){
+        throw new BadRequestException("Invalid organization Id.");
+    }
 }   
 
 export const getOrganizationMembersService = async (orgId: string) => {

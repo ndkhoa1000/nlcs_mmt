@@ -47,7 +47,7 @@ export const getOrganizationByIdController = asyncHandler(
 
         const {organization} = await getOrganizationByIdService(orgId);
         return res.status(HTTPSTATUS.OK).json({
-            message: "Organization updated.",
+            message: "Organization fetch successfully.",
             organization
         });
     }
