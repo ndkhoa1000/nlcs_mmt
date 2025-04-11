@@ -5,7 +5,7 @@ const useAuth = () => {
   const query = useQuery({
     queryKey: ["authUser"],
     queryFn: getCurrentUserQueryFn,
-    staleTime: 0,
+    staleTime: 0, //time (in ms) to refetch queryFn
     retry: 2,
   });
   return query;
