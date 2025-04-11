@@ -29,7 +29,6 @@ import { WorkspaceSwitcher } from "./organization-switcher";
 import { NavMain } from "./nav-main";
 import { NavProjects } from "./nav-projects";
 import { Separator } from "../ui/separator";
-import useOrgId from "@/hooks/use-org-id";
 import { useAuthContext } from "@/context/auth-provider";
 import { AvatarImage } from "@radix-ui/react-avatar";
 
@@ -85,7 +84,7 @@ const Asidebar = () => {
                       className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                     >
                       <Avatar className="h-8 w-8 rounded-full">
-                        <AvatarImage src={user?.profilePicture} />
+                        <AvatarImage src={user?.profilePicture || ""} />
                         <AvatarFallback className="rounded-full border border-gray-500">
                         {user?.name?.split(" ")?.[0]?.charAt(0)}
                         {user?.name?.split(" ")?.[1]?.charAt(0)}

@@ -1,5 +1,5 @@
 import API from "./axios-client";
-import { AllOrganizationsResponseType, CurrentUserResponseType, LoginResponseType, loginType, registerType } from "@/types/api.type";
+import { AllOrganizationsResponseType, CurrentUserResponseType, LoginResponseType, loginType, OrganizationByIdResponseType, registerType } from "@/types/api.type";
 
 export const loginMutationFn = async (data:loginType): Promise<LoginResponseType> => {
   const response = await API.post("/auth/login", data);
@@ -10,7 +10,7 @@ export const registerMutationFn = async (data: registerType) => {
   return await API.post("/auth/register", data);
 };
 
-export const logoutMutationFn = async () => {};
+export const logoutMutationFn = async () => await API.post(`auth/logout`);
 
 export const getCurrentUserQueryFn =
   async (): Promise<CurrentUserResponseType> => {
@@ -25,12 +25,16 @@ async(): Promise<AllOrganizationsResponseType> => {
   const response = await API.get(`/organization/all`);
   return response.data;
 };
+export const getOrganizationByIdQueryFn = 
+async (orgId: string) :Promise<OrganizationByIdResponseType> => {
+  const response = await API.get(`/organization/${orgId}`);
+  return response.data
+};
 
 export const createOrganizationMutationFn = async () => {};
 
 export const editOrganizationMutationFn = async () => {};
 
-export const getOrganizationByIdQueryFn = async () => {};
 
 
 export const getOrganizationAnalyticsQueryFn = async () => {};

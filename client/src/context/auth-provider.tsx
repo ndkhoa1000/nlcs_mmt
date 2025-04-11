@@ -1,17 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext } from "react";
 import useOrgId from "@/hooks/use-org-id";
 import useAuth from "@/hooks/api/use-auth";
-import { UserType } from "@/types/api.type";
+import { OrganizationType, UserType } from "@/types/api.type";
+import useGetOrganizationQuery from "@/hooks/api/use-get-org";
 
 // Define the context shape
 type AuthContextType = {
-  orgId: string;
+  organization?: OrganizationType;
   user?: UserType;
   error: any;
   isLoading: boolean;
   isFetching: boolean;
   refetchAuth: () => void;
+  refetchOrg: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,21 +29,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     refetch: refetchAuth
   } = useAuth();
   const user = authData?.user;
+  
   const orgId = useOrgId();
-
-  useEffect(() => {
-
-  });
+  const {
+    data: orgData,
+    error: orgError,
+    isLoading: orgLoading,
+    refetch: refetchOrg,
+  } = useGetOrganizationQuery(orgId);
+  console.log('orgError:', orgError)
+  const organization = orgData?.organization;
 
   return (
     <AuthContext.Provider
       value={{
-        orgId,
+        organization,
         user,
-        error: authError,
-        isLoading: authLoading,
+        error: authError ||orgError,
+        isLoading: authLoading || orgLoading,
         isFetching,
         refetchAuth,
+        refetchOrg,
       }}
     >
       {children}
