@@ -1,8 +1,8 @@
 import { parseAsBoolean, useQueryState } from "nuqs";
 
-const useCreateWorkspaceDialog = () => {
+const useCreateOrganizationDialog = () => {
   const [open, setOpen] = useQueryState(
-    "new-workspace",
+    "new-organization",
     parseAsBoolean.withDefault(false)
   );
 
@@ -15,4 +15,4 @@ const useCreateWorkspaceDialog = () => {
   };
 };
 
-export default useCreateWorkspaceDialog;
+export default useCreateOrganizationDialog;

@@ -3,7 +3,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AuthProvider } from "@/context/auth-provider";
 import Asidebar from "@/components/asidebar/asidebar";
 import Header from "@/components/header";
-import CreateWorkspaceDialog from "@/components/workspace/create-workspace-dialog";
+import CreateOrganizationDialog from "@/components/workspace/create-workspace-dialog";
 import CreateProjectDialog from "@/components/workspace/project/create-project-dialog";
 
 const AppLayout = () => {
@@ -19,7 +19,7 @@ const AppLayout = () => {
                 <Outlet />
               </div>
             </>
-            <CreateWorkspaceDialog />
+            <CreateOrganizationDialog />
             <CreateProjectDialog />
           </div>
         </SidebarInset>
