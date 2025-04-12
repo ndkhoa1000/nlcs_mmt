@@ -35,19 +35,19 @@ export function NavMain() {
       icon: LayoutDashboard,
     },
     {
-      title: "Tasks",
-      url: `/oganization/${orgId}/tasks`,
+      title: "Events",
+      url: `/organization/${orgId}/events`,
       icon: CheckCircle,
     },
     {
       title: "Members",
-      url: `/oganization/${orgId}/members`,
+      url: `/organization/${orgId}/members`,
       icon: Users,
     },
 
     {
       title: "Settings",
-      url: `/oganization/${orgId}/settings`,
+      url: `/organization/${orgId}/settings`,
       icon: Settings,
     },
   ];

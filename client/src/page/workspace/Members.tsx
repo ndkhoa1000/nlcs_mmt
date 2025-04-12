@@ -1,12 +1,12 @@
 import { Separator } from "@/components/ui/separator";
 import InviteMember from "@/components/organization/member/invite-member";
 import AllMembers from "@/components/organization/member/all-members";
-import WorkspaceHeader from "@/components/organization/common/workspace-header";
+import OrganizationHeader from "@/components/organization/common/workspace-header";
 
 export default function Members() {
   return (
     <div className="w-full h-auto pt-2">
-      <WorkspaceHeader />
+      <OrganizationHeader />
       <Separator className="my-4 " />
       <main>
         <div className="w-full max-w-3xl mx-auto pt-3">

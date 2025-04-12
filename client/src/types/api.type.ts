@@ -122,7 +122,10 @@ export type CreateOrganizationResponseType = {
   message: string;
   organization: OrganizationType;
 };
-
+export type EditOrganizationResponseType = {
+  message: string;
+  organization: OrganizationType;
+};
 export type AllOrganizationsResponseType = {
   message: string;
   organizations: OrganizationType[];

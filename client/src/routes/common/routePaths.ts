@@ -10,7 +10,7 @@ export const AUTH_ROUTES = {
 
 export const PROTECTED_ROUTES = {
   ORGANIZATION: "/organization/:orgId",
-  EVENTS: "/organization/:orgId/tasks",
+  EVENTS: "/organization/:orgId/events",
   MEMBERS: "/organization/:orgId/members",
   SETTINGS: "/organization/:orgId/settings",
   PROGRAM_DETAILS: "/organization/:orgId/program/:programId",
