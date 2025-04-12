@@ -43,7 +43,7 @@ export function WorkspaceSwitcher() {
   const { data, isPending } = useQuery({
     queryKey: ["userOrgs"],
     queryFn: getAllOrganizationsUserIsMemberQueryFn,
-    staleTime: 1,
+    staleTime: 0,
     refetchOnMount: true,
   });
 
