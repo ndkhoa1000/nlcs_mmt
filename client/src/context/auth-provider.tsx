@@ -5,6 +5,7 @@ import useAuth from "@/hooks/api/use-auth";
 import { OrganizationType, UserType } from "@/types/api.type";
 import useGetOrganizationQuery from "@/hooks/api/use-get-org";
 import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 
 // Define the context shape
 type AuthContextType = {
@@ -41,10 +42,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   } = useGetOrganizationQuery(orgId);
   console.log('orgError:', orgError)
   const organization = orgData?.organization;
-// BUG: orgError still null even the change of route.
   useEffect(() => {
     if (orgError) {
       if (orgError?.errorCode === "ACCESS_UNAUTHORIZED") {
+        toast({
+          title:"Error",
+          description:orgError?.response?.data?.message,
+          variant:"destructive",
+        })
         navigate("/"); // Redirect if the user is not a member of the workspace
       }
     }

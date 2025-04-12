@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import useOrgId from "@/hooks/use-org-id";
-// NOTE: fix the name and function "useCreateWorkspaceDialog" 
 import useCreateOrganizationDialog from "@/hooks/use-create-org-dialog";
 import { useQuery } from "@tanstack/react-query";
 import { getAllOrganizationsUserIsMemberQueryFn } from "@/lib/api";
@@ -31,7 +30,7 @@ type OrgType = {
   plan: string;
 };
 
-export function WorkspaceSwitcher() {
+export function OrganizationSwitcher() {
   const navigate = useNavigate();
   const { isMobile } = useSidebar();
 
