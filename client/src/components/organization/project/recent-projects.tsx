@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import useWorkspaceId from "@/hooks/use-workspace-id";
+import useOrgId from "@/hooks/use-org-id";
 
 const RecentProjects = () => {
-  const workspaceId = useWorkspaceId();
+  const orgId = useOrgId();
 
   const projects = [
     {
@@ -78,7 +78,7 @@ const RecentProjects = () => {
             className="shadow-none cursor-pointer border-0 py-2 hover:bg-gray-50 transition-colors ease-in-out "
           >
             <Link
-              to={`/workspace/${workspaceId}/project/:p383dh`}
+              to={`/oganization/${orgId}/project/:p383dh`}
               className="grid gap-8 p-0"
             >
               <div className="flex items-start gap-2">

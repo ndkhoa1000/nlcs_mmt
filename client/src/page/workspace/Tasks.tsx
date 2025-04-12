@@ -1,5 +1,5 @@
-import CreateTaskDialog from "@/components/workspace/task/create-task-dialog";
-import TaskTable from "@/components/workspace/task/task-table";
+import CreateTaskDialog from "@/components/organization/task/create-task-dialog";
+import TaskTable from "@/components/organization/task/task-table";
 
 export default function Tasks() {
   return (

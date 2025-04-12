@@ -2,11 +2,11 @@ import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import useCreateProjectDialog from "@/hooks/use-create-project-dialog";
-import WorkspaceAnalytics from "@/components/workspace/workspace-analytics";
+import WorkspaceAnalytics from "@/components/organization/org-analytics";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import RecentProjects from "@/components/workspace/project/recent-projects";
-import RecentTasks from "@/components/workspace/task/recent-tasks";
-import RecentMembers from "@/components/workspace/member/recent-members";
+import RecentProjects from "@/components/organization/project/recent-projects";
+import RecentTasks from "@/components/organization/task/recent-tasks";
+import RecentMembers from "@/components/organization/member/recent-members";
 const OrganizationDashboard = () => {
   const { onOpen } = useCreateProjectDialog();
   return (

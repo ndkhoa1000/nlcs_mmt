@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
-  TaskPriorityEnum,
-  TaskPriorityEnumType,
-  TaskStatusEnum,
-  TaskStatusEnumType,
+  EventPriorityEnum,
+  EventPriorityEnumType,
+  EventStatusEnum,
+  EventStatusEnumType,
 } from "@/constant";
 import {
   getAvatarColor,
@@ -16,8 +16,8 @@ type TasksType = {
   id: string;
   title: string;
   dueDate: string;
-  status: TaskStatusEnumType;
-  priority: TaskPriorityEnumType;
+  status: EventStatusEnumType;
+  priority: EventPriorityEnumType;
   assigneeTo: string;
 };
 
@@ -95,7 +95,7 @@ const RecentTasks = () => {
               {/* Task Status */}
               <div className="text-sm font-medium ">
                 <Badge
-                  variant={TaskStatusEnum[task.status]}
+                  variant={EventStatusEnum[task.status]}
                   className="flex w-auto p-1 px-2 gap-1 font-medium shadow-sm uppercase border-0"
                 >
                   <span>{transformStatusEnum(task.status)}</span>
@@ -105,7 +105,7 @@ const RecentTasks = () => {
               {/* Task Priority */}
               <div className="text-sm ml-2">
                 <Badge
-                  variant={TaskPriorityEnum[task.priority]}
+                  variant={EventPriorityEnum[task.priority]}
                   className="flex w-auto p-1 px-2 gap-1 font-medium shadow-sm uppercase border-0"
                 >
                   <span>{transformStatusEnum(task.priority)}</span>

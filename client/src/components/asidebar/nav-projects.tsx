@@ -16,7 +16,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import useWorkspaceId from "@/hooks/use-workspace-id";
+import useOrgId from "@/hooks/use-org-id";
 import useCreateProjectDialog from "@/hooks/use-create-project-dialog";
 import { ConfirmDialog } from "../resuable/confirm-dialog";
 import useConfirmDialog from "@/hooks/use-confirm-dialog";
@@ -30,7 +30,7 @@ export function NavProjects() {
   const { onOpen } = useCreateProjectDialog();
   const { context, open, onOpenDialog, onCloseDialog } = useConfirmDialog();
 
-  const workspaceId = useWorkspaceId();
+  const orgId = useOrgId();
 
   const { isMobile } = useSidebar();
 
@@ -39,19 +39,19 @@ export function NavProjects() {
       id: "pro-383dh",
       name: "Design Engineering",
       emoji: "📊",
-      url: `/workspace/${workspaceId}/project/:pro-383dh`,
+      url: `/oganization/${orgId}/project/:pro-383dh`,
     },
     {
       id: "p383dh",
       name: "Sales & Marketing",
       emoji: "📈",
-      url: `/workspace/${workspaceId}/project/:p383dh`,
+      url: `/oganization/${orgId}/project/:p383dh`,
     },
     {
       id: "pro-wwhe",
       name: "Travel",
       emoji: "✈️",
-      url: `/workspace/${workspaceId}/project/:pro-wwhe`,
+      url: `/oganization/${orgId}/project/:pro-wwhe`,
     },
   ];
 

@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
-import InviteMember from "@/components/workspace/member/invite-member";
-import AllMembers from "@/components/workspace/member/all-members";
-import WorkspaceHeader from "@/components/workspace/common/workspace-header";
+import InviteMember from "@/components/organization/member/invite-member";
+import AllMembers from "@/components/organization/member/all-members";
+import WorkspaceHeader from "@/components/organization/common/workspace-header";
 
 export default function Members() {
   return (

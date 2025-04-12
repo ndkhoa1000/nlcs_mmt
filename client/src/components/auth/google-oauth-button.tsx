@@ -1,6 +1,5 @@
 import { baseURL } from "@/lib/base-url";
 import { Button } from "../ui/button";
-// BUG: login success or cancel will redirect to LoginFailure
 const GoogleOauthButton = (props: { label: string }) => {
   const { label } = props;
   const handleClick = () => {

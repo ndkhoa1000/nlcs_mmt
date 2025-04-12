@@ -14,7 +14,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "react-router-dom";
-import useWorkspaceId from "@/hooks/use-workspace-id";
+import useOrgId from "@/hooks/use-org-id";
 
 type ItemType = {
   title: string;
@@ -23,7 +23,7 @@ type ItemType = {
 };
 
 export function NavMain() {
-  const workspaceId = useWorkspaceId();
+  const orgId = useOrgId();
   const location = useLocation();
 
   const pathname = location.pathname;
@@ -31,23 +31,23 @@ export function NavMain() {
   const items: ItemType[] = [
     {
       title: "Dashboard",
-      url: `/workspace/${workspaceId}`,
+      url: `/organization/${orgId}`,
       icon: LayoutDashboard,
     },
     {
       title: "Tasks",
-      url: `/workspace/${workspaceId}/tasks`,
+      url: `/oganization/${orgId}/tasks`,
       icon: CheckCircle,
     },
     {
       title: "Members",
-      url: `/workspace/${workspaceId}/members`,
+      url: `/oganization/${orgId}/members`,
       icon: Users,
     },
 
     {
       title: "Settings",
-      url: `/workspace/${workspaceId}/settings`,
+      url: `/oganization/${orgId}/settings`,
       icon: Settings,
     },
   ];

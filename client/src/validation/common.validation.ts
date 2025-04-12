@@ -5,7 +5,7 @@ export const nameSchema = z.string().trim().min(1, { message: "Name is required"
 export const descriptionSchema = z.string().trim();
 export const emailSchema = z.string().trim().email("Invalid email address").min(1).max(255);
 export const passwordSchema = z.string().trim().min(8, { message: "Password must be at least 8 characters" }).max(255);
-export const urlSchema = z.string().trim().url("Invalid URL").nullable();
+export const urlSchema = z.string().trim().url("Invalid URL");
 export const phoneSchema = z.string().trim().min(10, { message: "Phone number must be valid" }).max(20);
 export const addressSchema = z.string().trim().min(1, { message: "Address is required" }).max(500);
 

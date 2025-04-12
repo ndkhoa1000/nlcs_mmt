@@ -29,8 +29,8 @@ import { Textarea } from "../../ui/textarea";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { transformOptions } from "@/lib/helper";
-import useWorkspaceId from "@/hooks/use-workspace-id";
-import { TaskPriorityEnum, TaskStatusEnum } from "@/constant";
+import useOrgId from "@/hooks/use-org-id";
+import { EventPriorityEnum, EventStatusEnum } from "@/constant";
 
 export default function CreateTaskForm(props: {
   projectId?: string;
@@ -38,7 +38,7 @@ export default function CreateTaskForm(props: {
 }) {
   const { projectId, onClose } = props;
 
-  const workspaceId = useWorkspaceId();
+  const orgId = useOrgId();
 
   const isLoading = false;
 
@@ -56,13 +56,13 @@ export default function CreateTaskForm(props: {
       message: "Project is required",
     }),
     status: z.enum(
-      Object.values(TaskStatusEnum) as [keyof typeof TaskStatusEnum],
+      Object.values(EventStatusEnum) as [keyof typeof EventStatusEnum],
       {
         required_error: "Status is required",
       }
     ),
     priority: z.enum(
-      Object.values(TaskPriorityEnum) as [keyof typeof TaskPriorityEnum],
+      Object.values(EventPriorityEnum) as [keyof typeof EventPriorityEnum],
       {
         required_error: "Priority is required",
       }
@@ -84,8 +84,8 @@ export default function CreateTaskForm(props: {
     },
   });
 
-  const taskStatusList = Object.values(TaskStatusEnum);
-  const taskPriorityList = Object.values(TaskPriorityEnum); // ["LOW", "MEDIUM", "HIGH", "URGENT"]
+  const taskStatusList = Object.values(EventStatusEnum);
+  const taskPriorityList = Object.values(EventPriorityEnum); // ["LOW", "MEDIUM", "HIGH", "URGENT"]
 
   const statusOptions = transformOptions(taskStatusList);
   const priorityOptions = transformOptions(taskPriorityList);

@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
-import WorkspaceHeader from "@/components/workspace/common/workspace-header";
-import EditWorkspaceForm from "@/components/workspace/edit-workspace-form";
-import DeleteWorkspaceCard from "@/components/workspace/settings/delete-workspace-card";
+import WorkspaceHeader from "@/components/organization/common/workspace-header";
+import EditWorkspaceForm from "@/components/organization/edit-org-form";
+import DeleteWorkspaceCard from "@/components/organization/settings/delete-workspace-card";
 
 const Settings = () => {
   return (

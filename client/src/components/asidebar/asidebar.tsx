@@ -33,9 +33,8 @@ import { useAuthContext } from "@/context/auth-provider";
 import { AvatarImage } from "@radix-ui/react-avatar";
 
 const Asidebar = () => {
-  const {user, orgId, isLoading} = useAuthContext();
+  const {user, organization, isLoading} = useAuthContext();
   const { open } = useSidebar();
-  // const orgId = useOrgId();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -46,10 +45,10 @@ const Asidebar = () => {
       <Sidebar collapsible="icon">
         <SidebarHeader className="!py-0 dark:bg-background">
           <div className="flex h-[50px] items-center justify-start w-full px-1">
-            <Logo url={`/organization/${orgId}`} />
+            <Logo url={`/organization/${organization?._id}`} />
             {open && (
               <Link
-                to={`/organization/${orgId}`}
+                to={`/organization/${organization?._id}`}
                 className="hidden md:flex ml-2 items-center gap-2 self-center font-medium"
               >
                 Open heart.

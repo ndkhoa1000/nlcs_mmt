@@ -6,10 +6,10 @@ import { DataTableRowActions } from "./table-row-actions";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import {
-  TaskPriorityEnum,
-  TaskPriorityEnumType,
-  TaskStatusEnum,
-  TaskStatusEnumType,
+  EventPriorityEnum,
+  EventPriorityEnumType,
+  EventStatusEnum,
+  EventStatusEnumType,
 } from "@/constant";
 import {
   formatStatusToEnum,
@@ -148,7 +148,7 @@ export const getColumns = (projectId?: string): ColumnDef<TaskType>[] => {
 
         const statusKey = formatStatusToEnum(
           status.value
-        ) as TaskStatusEnumType;
+        ) as EventStatusEnumType;
         const Icon = status.icon;
 
         if (!Icon) {
@@ -158,7 +158,7 @@ export const getColumns = (projectId?: string): ColumnDef<TaskType>[] => {
         return (
           <div className="flex lg:w-[120px] items-center">
             <Badge
-              variant={TaskStatusEnum[statusKey]}
+              variant={EventStatusEnum[statusKey]}
               className="flex w-auto p-1 px-2 gap-1 font-medium shadow-sm uppercase border-0"
             >
               <Icon className="h-4 w-4 rounded-full text-inherit" />
@@ -184,7 +184,7 @@ export const getColumns = (projectId?: string): ColumnDef<TaskType>[] => {
 
         const statusKey = formatStatusToEnum(
           priority.value
-        ) as TaskPriorityEnumType;
+        ) as EventPriorityEnumType;
         const Icon = priority.icon;
 
         if (!Icon) {
@@ -194,7 +194,7 @@ export const getColumns = (projectId?: string): ColumnDef<TaskType>[] => {
         return (
           <div className="flex items-center">
             <Badge
-              variant={TaskPriorityEnum[statusKey]}
+              variant={EventPriorityEnum[statusKey]}
               className="flex lg:w-[110px] p-1 gap-1 !bg-transparent font-medium !shadow-none uppercase border-0"
             >
               <Icon className="h-4 w-4 rounded-full text-inherit" />
