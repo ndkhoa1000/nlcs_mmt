@@ -1,11 +1,11 @@
 import GoogleOAuthFailure from "@/page/auth/GoogleOAuthFailure";
 import SignIn from "@/page/auth/Sign-in";
 import SignUp from "@/page/auth/Sign-up";
-import OrganizationDashboard from "@/page/workspace/Dashboard";
-import Members from "@/page/workspace/Members";
-import ProjectDetails from "@/page/workspace/ProjectDetails";
-import Settings from "@/page/workspace/Settings";
-import Tasks from "@/page/workspace/Tasks";
+import OrganizationDashboard from "@/page/organization/Dashboard";
+import Members from "@/page/organization/Members";
+import ProjectDetails from "@/page/organization/ProjectDetails";
+import Settings from "@/page/organization/Settings";
+import Tasks from "@/page/organization/Tasks";
 import { AUTH_ROUTES, BASE_ROUTE, PROTECTED_ROUTES } from "./routePaths";
 import InviteUser from "@/page/invite/InviteUser";
 
