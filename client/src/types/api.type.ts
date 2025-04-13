@@ -1,7 +1,4 @@
-// TODO: refactor all the type as the models defined in backend.
-
 import {
-  PermissionType,
   EventPriorityEnumType,
   EventStatusEnumType,
 } from "@/constant";
@@ -165,7 +162,7 @@ export type PaginationType = {
 // ROLE & PERMISSION TYPES
 export type RoleType = {
   _id: string;
-  name: PermissionType;
+  name: string;
 };
 // *********** MEMBER ****************
 
@@ -180,7 +177,7 @@ export type MemberType = {
   orgId: string;
   role: {
     _id: string;
-    name: PermissionType;
+    name: string;
   };
   isApproved: boolean;
   volunteerHours: number;
@@ -198,7 +195,7 @@ export type AllMembersInOrganizationResponseType = {
 export type ChangeOrganizationMemberRoleType = {
   orgId: string;
   data: {
-    roleId: PermissionType;
+    roleId: string;
     memberId: string;
   };
 };

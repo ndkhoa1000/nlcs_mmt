@@ -1,5 +1,5 @@
 import API from "./axios-client";
-import { AllOrganizationsResponseType, CreateOrganizationResponseType, CreateOrganizationType, CurrentUserResponseType, EditOrganizationResponseType, EditOrganizationType, LoginResponseType, loginType, OrganizationAnalyticsResponseType, OrganizationByIdResponseType, registerType } from "@/types/api.type";
+import { AllMembersInOrganizationResponseType, AllOrganizationsResponseType, CreateOrganizationResponseType, CreateOrganizationType, CurrentUserResponseType, EditOrganizationResponseType, EditOrganizationType, LoginResponseType, loginType, MemberType, OrganizationAnalyticsResponseType, OrganizationByIdResponseType, registerType } from "@/types/api.type";
 
 export const loginMutationFn = async (data:loginType): Promise<LoginResponseType> => {
   const response = await API.post("/auth/login", data);
@@ -61,27 +61,36 @@ export const changeOrganizationMemberRoleMutationFn = async () => {};
 
 //******* MEMBER ****************
 
-export const invitedUserJoinOrganizationMutationFn = async () => {};
+export const invitedUserJoinOrganizationMutationFn = 
+async (inviteCode: string): Promise<{message: string; member: MemberType;}> => {
+  const response = await API.post(`/organization/join`,{inviteCode});
+  return response.data;
+};
+export const getAllMemberInOrganizationQueryFn = 
+async(orgId:string) :Promise<AllMembersInOrganizationResponseType> => {
+  const response = await API.get(`organization/${orgId}/member/all`);
+  return response.data
+}
 
 //********* */
 //********* PROGRAM
-export const createProjectMutationFn = async () => {};
+export const createProgramMutationFn = async () => {};
 
-export const editProjectMutationFn = async () => {};
+export const editProgramMutationFn = async () => {};
 
-export const getProjectsInOrganizationQueryFn = async () => {};
+export const getProgramsInOrganizationQueryFn = async () => {};
 
-export const getProjectByIdQueryFn = async () => {};
+export const getProgramByIdQueryFn = async () => {};
 
-export const getProjectAnalyticsQueryFn = async () => {};
+export const getProgramAnalyticsQueryFn = async () => {};
 
-export const deleteProjectMutationFn = async () => {};
+export const deleteProgramMutationFn = async () => {};
 
 //******* EVENT ********************************
 //************************* */
 
-export const createTaskMutationFn = async () => {};
+export const createEventMutationFn = async () => {};
 
-export const getAllTasksQueryFn = async () => {};
+export const getAllEventsQueryFn = async () => {};
 
-export const deleteTaskMutationFn = async () => {};
+export const deleteEventMutationFn = async () => {};
