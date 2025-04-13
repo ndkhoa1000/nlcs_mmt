@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { objectIdSchema, dateSchema } from "./common.validation";
+import { dateSchema } from "./common.validation";
 
 export const createAttendanceSchema = z.object({
     isPresent: z.boolean().default(false),
