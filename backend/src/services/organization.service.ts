@@ -179,30 +179,30 @@ export const updateOrganizationByIdService = async (
 export const getOrganizationAnalyticsService = async(userId: string, orgId: string) => {
     const currentDate = new Date();
 
-    const totalsProgram = await ProgramModel.countDocuments({organization: orgId});
+    const totalProgram = await ProgramModel.countDocuments({organization: orgId});
     const totalEvent = await EventModel.countDocuments({organization:orgId});
     const totalPendingEvent = await EventModel.countDocuments({
         organization:orgId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.PENDING
     });
     const totalActiveEvent = await EventModel.countDocuments({
         organization:orgId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.ACTIVE
     });
     const totalCompleteEvent = await EventModel.countDocuments({
         organization:orgId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.COMPLETED
     });
     const totalPostponedEvent = await EventModel.countDocuments({
         organization:orgId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.POSTPONED
     });
     const analysis = {
-        totalsProgram,
+        totalProgram,
         totalEvent,
         totalPendingEvent,
         totalActiveEvent,

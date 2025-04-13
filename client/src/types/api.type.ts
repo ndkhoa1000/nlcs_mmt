@@ -144,7 +144,7 @@ export type OrganizationByIdResponseType = {
 export type OrganizationAnalyticsResponseType = {
   message: string;
   analysis: {
-    totalsProgram: number;
+    totalProgram: number;
     totalEvent: number;
     totalPendingEvent: number;
     totalActiveEvent: number;
