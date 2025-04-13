@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import OrganizationHeader from "@/components/organization/common/workspace-header";
 import EditOrganizationForm from "@/components/organization/edit-org-form";
-import DeleteWorkspaceCard from "@/components/organization/settings/delete-workspace-card";
+import DeleteOrgCard from "@/components/organization/settings/delete-org-card";
 
 const Settings = () => {
   return (
@@ -19,7 +19,7 @@ const Settings = () => {
               <EditOrganizationForm />
             </div>
             <div className="pt-2">
-              <DeleteWorkspaceCard />
+              <DeleteOrgCard />
             </div>
           </div>
         </div>

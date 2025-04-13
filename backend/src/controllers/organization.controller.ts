@@ -117,10 +117,10 @@ export const deleteOrganizationByIdController = asyncHandler(
         const {role} = await getMemberRoleInWorkspaceService(userId,orgId);
         roleGuard(role, [Permissions.DELETE_ORGANIZATION]);
 
-        const {currentOrg} = await deleteOrganizationByIdService(userId, orgId);
+        const {currentOrgId} = await deleteOrganizationByIdService(userId, orgId);
         return res.status(HTTPSTATUS.OK).json({
             message: "Organization deleted.",
-            currentOrg
+            currentOrgId
         });
     }
 );

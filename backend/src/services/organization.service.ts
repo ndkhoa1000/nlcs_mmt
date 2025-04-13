@@ -248,7 +248,8 @@ export const deleteOrganizationByIdService = async(userId: string, orgId: string
         await OrganizationModel.deleteOne({_id: orgId}).session(session);
         await session.commitTransaction();
         session.endSession();
-        return {currentOrg: organization};
+        console.log('[deleteOrganizationService]: End session.');
+        return {currentOrgId: user.currentOrganization};
     } catch (error) {
         console.log("Error during session...", error);
         await session.abortTransaction();

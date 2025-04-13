@@ -43,13 +43,16 @@ async (data: EditOrganizationType, orgId:string) : Promise<EditOrganizationRespo
   return response.data
 };
 
-
+export const deleteOrganizationMutationFn = 
+async (orgId: string) => {
+  const response = await API.delete(`/organization/delete/${orgId}`);
+  return response.data
+};
 
 export const getOrganizationAnalyticsQueryFn = async () => {};
 
 export const changeOrganizationMemberRoleMutationFn = async () => {};
 
-export const deleteOrganizationMutationFn = async () => {};
 
 //******* MEMBER ****************
 
