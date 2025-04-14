@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "react-router-dom";
 import useOrgId from "@/hooks/use-org-id";
+import { useAuthContext } from "@/context/auth-provider";
+import { Permissions } from "@/constant";
 
 type ItemType = {
   title: string;
@@ -23,11 +25,12 @@ type ItemType = {
 };
 
 export function NavMain() {
+  const {hasPermission} = useAuthContext();
   const orgId = useOrgId();
   const location = useLocation();
-
   const pathname = location.pathname;
 
+  const canManageOrgSettings = hasPermission(Permissions.MANAGE_ORGANIZATION_SETTINGS);
   const items: ItemType[] = [
     {
       title: "Dashboard",
@@ -44,12 +47,13 @@ export function NavMain() {
       url: `/organization/${orgId}/members`,
       icon: Users,
     },
-
-    {
-      title: "Settings",
-      url: `/organization/${orgId}/settings`,
-      icon: Settings,
-    },
+    ...(canManageOrgSettings ?[
+      {
+        title: "Settings",
+        url: `/organization/${orgId}/settings`,
+        icon: Settings,
+      },
+    ]:[])
   ];
   return (
     <SidebarGroup>

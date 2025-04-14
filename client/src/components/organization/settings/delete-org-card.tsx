@@ -1,5 +1,7 @@
 import { ConfirmDialog } from "@/components/resuable/confirm-dialog";
+import PermissionsGuard from "@/components/resuable/permission-guard";
 import { Button } from "@/components/ui/button";
+import { Permissions } from "@/constant";
 import { useAuthContext } from "@/context/auth-provider";
 import useConfirmDialog from "@/hooks/use-confirm-dialog";
 import useOrgId from "@/hooks/use-org-id";
@@ -57,7 +59,7 @@ const DeleteOrgCard = () => {
             Delete Organization
           </h1>
         </div>
-
+      <PermissionsGuard showMessage requiredPermission={Permissions.DELETE_ORGANIZATION}>
         <div className="flex flex-col items-start justify-between py-0">
           <div className="flex-1 mb-2">
             <p>
@@ -75,6 +77,7 @@ const DeleteOrgCard = () => {
             Delete Organization
           </Button>
         </div>
+      </PermissionsGuard>
       </div>
 
       <ConfirmDialog

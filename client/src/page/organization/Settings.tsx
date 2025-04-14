@@ -2,6 +2,8 @@ import { Separator } from "@/components/ui/separator";
 import OrganizationHeader from "@/components/organization/common/workspace-header";
 import EditOrganizationForm from "@/components/organization/edit-org-form";
 import DeleteOrgCard from "@/components/organization/settings/delete-org-card";
+import withPermission from "@/hoc/with-permission";
+import { Permissions } from "@/constant";
 
 const Settings = () => {
   return (
@@ -27,5 +29,5 @@ const Settings = () => {
     </div>
   );
 };
-
-export default Settings;
+const SettingsWithPermissions = withPermission(Settings,Permissions.MANAGE_ORGANIZATION_SETTINGS);
+export default SettingsWithPermissions;

@@ -2,6 +2,7 @@
 import { PermissionType } from "@/constant";
 import { useAuthContext } from "@/context/auth-provider";
 import useOrgId from "@/hooks/use-org-id";
+import { toast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -25,6 +26,11 @@ const withPermission = (
 
     // Check if user has the required permission
     if (!user || !hasPermission(requiredPermission)) {
+      toast({
+        title: "Unauthorized Error",
+        description:"You don't have permission to access it.",
+        variant: "destructive"
+      })
       return;
     }
     // If the user has permission, render the wrapped component

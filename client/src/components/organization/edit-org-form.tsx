@@ -28,13 +28,14 @@ import { editOrganizationMutationFn } from "@/lib/api";
 import { useAuthContext } from "@/context/auth-provider";
 import useOrgId from "@/hooks/use-org-id";
 import { useEffect } from "react";
+import { Permissions } from "@/constant";
 
 export default function EditOrganizationForm() {
-
-  // const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const {organization} = useAuthContext();
+  const {organization, hasPermission} = useAuthContext();
   const orgId = useOrgId();
+
+  const canEditOrganization = hasPermission(Permissions.EDIT_ORGANIZATION);
   const { mutate, isPending } = useMutation({
     mutationFn: (data: z.infer<typeof updateOrganizationSchema>) => 
       editOrganizationMutationFn(data, orgId),
@@ -120,7 +121,12 @@ export default function EditOrganizationForm() {
                       Organization name <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Taco's Co." className="!h-[40px]" {...field} />
+                      <Input 
+                        placeholder="Taco's Co." 
+                        className="!h-[40px]" 
+                        disabled={!canEditOrganization}
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -137,7 +143,12 @@ export default function EditOrganizationForm() {
                         Address <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="123 Main St, City, Country" className="!h-[40px]" {...field} />
+                        <Input 
+                          placeholder="123 Main St, City, Country" 
+                          className="!h-[40px]" 
+                          disabled={!canEditOrganization}
+                          {...field} 
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -153,7 +164,12 @@ export default function EditOrganizationForm() {
                         Phone Number <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="+1 (123) 456-7890" className="!h-[40px]" {...field} />
+                        <Input 
+                          placeholder="+1 (123) 456-7890" 
+                          className="!h-[40px]" 
+                          disabled={!canEditOrganization}
+                          {...field} 
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -175,8 +191,11 @@ export default function EditOrganizationForm() {
                         <span className="text-xs font-extralight ml-2">Optional</span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="https://yourdomain.com/logo.png" className="!h-[40px]" 
-                        {...field} 
+                        <Input 
+                          placeholder="https://yourdomain.com/logo.png" 
+                          className="!h-[40px]" 
+                          disabled={!canEditOrganization}
+                          {...field} 
                         />
                       </FormControl>
                       <FormMessage />
@@ -194,7 +213,12 @@ export default function EditOrganizationForm() {
                         <span className="text-xs font-extralight ml-2">Optional</span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="info@tacosco.com" className="!h-[40px]" {...field} />
+                        <Input 
+                          placeholder="info@tacosco.com" 
+                          className="!h-[40px]" 
+                          disabled={!canEditOrganization}
+                          {...field} 
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -213,8 +237,11 @@ export default function EditOrganizationForm() {
                         <span className="text-xs font-extralight ml-2">Optional</span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="https://tacosco.com" className="!h-[40px]" 
-                        {...field} 
+                        <Input 
+                          placeholder="https://tacosco.com" 
+                          className="!h-[40px]" 
+                          disabled={!canEditOrganization}
+                          {...field} 
                         />
                       </FormControl>
                       <FormMessage />
@@ -243,6 +270,7 @@ export default function EditOrganizationForm() {
                               }}
                               className="!h-[40px]"
                               placeholder="https://twitter.com/youraccount"
+                              disabled={!canEditOrganization}
                             />
                             <Button
                               type="button"
@@ -253,6 +281,7 @@ export default function EditOrganizationForm() {
                                 newLinks.splice(index, 1);
                                 field.onChange(newLinks);
                               }}
+                              disabled={!canEditOrganization}
                             >
                               Remove
                             </Button>
@@ -266,6 +295,7 @@ export default function EditOrganizationForm() {
                             field.onChange([...(field.value || []), ""]);
                           }}
                           className="w-full"
+                          disabled={!canEditOrganization}
                         >
                           Add Social Media Link
                         </Button>
@@ -290,6 +320,7 @@ export default function EditOrganizationForm() {
                         <Textarea 
                           rows={3} 
                           placeholder="Our team organizes marketing projects and tasks here." 
+                          disabled={!canEditOrganization}
                           {...field} 
                         />
                       </FormControl>
@@ -310,7 +341,12 @@ export default function EditOrganizationForm() {
                         <span className="text-xs font-extralight ml-2">Optional</span>
                       </FormLabel>
                       <FormControl>
-                        <Textarea rows={2} placeholder="Our mission is to..." {...field} />
+                        <Textarea 
+                          rows={2} 
+                          placeholder="Our mission is to..." 
+                          disabled={!canEditOrganization}
+                          {...field} 
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -335,6 +371,7 @@ export default function EditOrganizationForm() {
                                 "w-full pl-3 text-left font-normal !h-[40px]",
                                 !field.value && "text-muted-foreground"
                               )}
+                              disabled={!canEditOrganization}
                             >
                               {field.value ? (
                                 format(field.value, "PPP")
@@ -351,6 +388,7 @@ export default function EditOrganizationForm() {
                             selected={field.value}
                             onSelect={field.onChange}
                             initialFocus
+                            disabled={!canEditOrganization}
                           />
                         </PopoverContent>
                       </Popover>
@@ -360,7 +398,7 @@ export default function EditOrganizationForm() {
                 />
               </div>
             </div>
-              
+          { canEditOrganization &&
             <Button
               className="shrink-0 flex place-self-end h-[40px] text-white font-semibold mt-4"
               type="submit"
@@ -368,6 +406,7 @@ export default function EditOrganizationForm() {
             >
               {isPending ? "Updating..." : "Update Organization"}
             </Button>
+          }
           </form>
         </Form>
       </div>
