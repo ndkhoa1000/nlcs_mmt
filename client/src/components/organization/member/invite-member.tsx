@@ -1,3 +1,4 @@
+import PermissionsGuard from "@/components/resuable/permission-guard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,7 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import { BASE_ROUTE } from "@/routes/common/routePaths";
 import { CheckIcon, CopyIcon, Loader } from "lucide-react";
 import { useState } from "react";
-
+import { Permissions } from "@/constant";
 const InviteMember = () => {
   const [copied, setCopied] = useState(false);
   const {organization, isLoading} = useAuthContext();
@@ -40,36 +41,37 @@ const InviteMember = () => {
         Anyone with an invite link can join this free organization. You can also
         disable and create a new invite link for this organization at any time.
       </p>
-
-      {isLoading ? (
-          <Loader
-            className="w-8 h-8 
-        animate-spin
-        place-self-center
-        flex"
-          />
-        ) : (
-          <div className="flex py-3 gap-2">
-            <Label htmlFor="link" className="sr-only">
-              Link
-            </Label>
-            <Input
-              id="link"
-              disabled={true}
-              className="disabled:opacity-100 disabled:pointer-events-none"
-              value={inviteUrl}
-              readOnly
+      <PermissionsGuard showMessage requiredPermission={Permissions.ADD_MEMBER}>
+        {isLoading ? (
+            <Loader
+              className="w-8 h-8 
+          animate-spin
+          place-self-center
+          flex"
             />
-            <Button
-              disabled={false}
-              className="shrink-0"
-              size="icon"
-              onClick={handleCopy}
-            >
-              {copied ? <CheckIcon /> : <CopyIcon />}
-            </Button>
-          </div>
-        )}
+          ) : (
+            <div className="flex py-3 gap-2">
+              <Label htmlFor="link" className="sr-only">
+                Link
+              </Label>
+              <Input
+                id="link"
+                disabled={true}
+                className="disabled:opacity-100 disabled:pointer-events-none"
+                value={inviteUrl}
+                readOnly
+              />
+              <Button
+                disabled={false}
+                className="shrink-0"
+                size="icon"
+                onClick={handleCopy}
+              >
+                {copied ? <CheckIcon /> : <CopyIcon />}
+              </Button>
+            </div>
+          )}
+      </PermissionsGuard>
     </div>
   );
 };

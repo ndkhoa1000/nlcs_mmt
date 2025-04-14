@@ -23,15 +23,18 @@ import { useAuthContext } from "@/context/auth-provider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { changeOrganizationMemberRoleMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
+import { Permissions } from "@/constant";
 
 const AllMembers = () => {
-  const {user} = useAuthContext();
+  const {user, hasPermission} = useAuthContext();
   const queryClient = useQueryClient();
   const orgId = useOrgId();
   const {data, isPending} = useGetAllMemberInOrganizationQuery(orgId);
   const members = data?.members || [];
   const roles = data?.roles || [];
   
+  const canChangeMember = hasPermission(Permissions.CHANGE_MEMBER_ROLE);
+
   const { mutate, isPending: isLoading } = useMutation({
     mutationFn: (data: { roleId: string; memberId: string }) => 
       changeOrganizationMemberRoleMutationFn(orgId, data),
@@ -65,7 +68,7 @@ const AllMembers = () => {
     });
   };
   return (
-<div className="grid gap-6 pt-2">
+    <div className="grid gap-6 pt-2">
       {isPending ? (
         <Loader className="w-8 h-8 animate-spin place-self-center flex" />
       ) : null}
@@ -75,7 +78,10 @@ const AllMembers = () => {
         const initials = getAvatarFallbackText(name);
         const avatarColor = getAvatarColor(name);
         return (
-          <div className="flex items-center justify-between space-x-4">
+          <div 
+            key={member.userId._id} 
+            className="flex items-center justify-between space-x-4"
+          >
             <div className="flex items-center space-x-4">
               <Avatar className="h-8 w-8">
                 <AvatarImage
@@ -100,15 +106,19 @@ const AllMembers = () => {
                     variant="outline"
                     size="sm"
                     className="ml-auto min-w-24 capitalize disabled:opacity-95 disabled:pointer-events-none"
-                    disabled={isLoading}
+                    disabled={
+                      isLoading || 
+                      !canChangeMember || 
+                      member.userId._id === user?._id
+                    }
                   >
                     {member.role.name?.toLowerCase()}{" "}
-                    {member.userId._id !== user?._id && (
+                    {canChangeMember && (member.userId._id !== user?._id) && (
                       <ChevronDown className="text-muted-foreground" />
                     )}
                   </Button>
                 </PopoverTrigger>
-                { (
+                { canChangeMember && (
                   <PopoverContent className="p-0" align="end">
                     <Command>
                       <CommandInput
