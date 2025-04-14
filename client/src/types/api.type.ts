@@ -192,12 +192,9 @@ export type AllMembersInOrganizationResponseType = {
   roles: RoleType[];
 };
 
-export type ChangeOrganizationMemberRoleType = {
-  orgId: string;
-  data: {
-    roleId: string;
-    memberId: string;
-  };
+export type ChangeOrganizationMemberRoleResponseType = {
+  message: string;
+  member: MemberType;
 };
 
 export type JoinOrganizationType = {

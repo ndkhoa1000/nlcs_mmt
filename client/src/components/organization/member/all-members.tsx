@@ -20,13 +20,50 @@ import { getAvatarColor, getAvatarFallbackText } from "@/lib/helper";
 import useGetAllMemberInOrganizationQuery from "@/hooks/api/use-get-org-members";
 import useOrgId from "@/hooks/use-org-id";
 import { useAuthContext } from "@/context/auth-provider";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { changeOrganizationMemberRoleMutationFn } from "@/lib/api";
+import { toast } from "@/hooks/use-toast";
 
 const AllMembers = () => {
-  const {user, isLoading} = useAuthContext();
+  const {user} = useAuthContext();
+  const queryClient = useQueryClient();
   const orgId = useOrgId();
   const {data, isPending} = useGetAllMemberInOrganizationQuery(orgId);
   const members = data?.members || [];
   const roles = data?.roles || [];
+  
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationFn: (data: { roleId: string; memberId: string }) => 
+      changeOrganizationMemberRoleMutationFn(orgId, data),
+  });
+
+  const handleSelect = (roleId: string, memberId: string) => {
+    if (!roleId || !memberId) return;
+    const payload = {
+      roleId,
+      memberId,
+    };
+    
+    mutate(payload, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["members", orgId],
+        });
+        toast({
+          title: "Success",
+          description: "Member's role changed successfully",
+          variant: "success",
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
+    });
+  };
   return (
 <div className="grid gap-6 pt-2">
       {isPending ? (
@@ -93,12 +130,12 @@ const AllMembers = () => {
                                       key={role._id}
                                       disabled={isLoading}
                                       className="disabled:pointer-events-none gap-1 mb-1  flex flex-col items-start px-4 py-2 cursor-pointer"
-                                      // onSelect={() => {
-                                      //   handleSelect(
-                                      //     role._id,
-                                      //     member.userId._id
-                                      //   );
-                                      // }}
+                                      onSelect={() => {
+                                        handleSelect(
+                                          role._id,
+                                          member.userId._id
+                                        );
+                                      }}
                                     >
                                       <p className="capitalize">
                                         {role.name?.toLowerCase()}
