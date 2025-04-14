@@ -2,7 +2,6 @@ import { z } from "zod";
 import { 
     nameSchema, 
     descriptionSchema,
-    objectIdSchema,
     stringArraySchema,
     dateSchema
 } from "./common.validation";

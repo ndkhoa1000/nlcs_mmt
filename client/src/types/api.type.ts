@@ -270,7 +270,7 @@ export type CreateProgramType = {
 
 
 
-export type ProgramResponseType = {
+export type ProgramResponseType =  {
   message: string;
   program: ProgramType;
 };
@@ -311,12 +311,6 @@ export type AllProgramsResponseType = {
   message: string;
   programs: ProgramType[];
   // pagination: PaginationType; //NOTE for filter
-};
-
-// SINGLE PROGRAM IN ORG TYPE
-export type ProgramByIdPayloadType = {
-  orgId: string;
-  programId: string;
 };
 
 //********** */ EVENT TYPES ************************

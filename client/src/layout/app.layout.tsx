@@ -4,7 +4,7 @@ import { AuthProvider } from "@/context/auth-provider";
 import Asidebar from "@/components/asidebar/asidebar";
 import Header from "@/components/header";
 import CreateOrganizationDialog from "@/components/organization/create-org-dialog";
-import CreateProjectDialog from "@/components/organization/project/create-project-dialog";
+import CreateProgramDialog from "@/components/organization/project/create-program-dialog";
 
 const AppLayout = () => {
   return (
@@ -20,7 +20,7 @@ const AppLayout = () => {
               </div>
             </>
             <CreateOrganizationDialog />
-            <CreateProjectDialog />
+            <CreateProgramDialog />
           </div>
         </SidebarInset>
       </SidebarProvider>

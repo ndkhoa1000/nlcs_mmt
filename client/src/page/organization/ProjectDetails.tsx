@@ -3,7 +3,7 @@ import ProjectAnalytics from "@/components/organization/project/project-analytic
 import ProjectHeader from "@/components/organization/project/project-header";
 import TaskTable from "@/components/organization/task/task-table";
 
-const ProjectDetails = () => {
+const ProgramDetails = () => {
   return (
     <div className="w-full space-y-6 py-4 md:pt-3">
       <ProjectHeader />
@@ -17,4 +17,4 @@ const ProjectDetails = () => {
   );
 };
 
-export default ProjectDetails;
+export default ProgramDetails;

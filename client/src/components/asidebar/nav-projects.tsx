@@ -17,24 +17,26 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import useOrgId from "@/hooks/use-org-id";
-import useCreateProjectDialog from "@/hooks/use-create-project-dialog";
+import useCreateProgramDialog from "@/hooks/use-create-project-dialog";
 import { ConfirmDialog } from "../resuable/confirm-dialog";
 import useConfirmDialog from "@/hooks/use-confirm-dialog";
 import { Button } from "../ui/button";
+import PermissionsGuard from "../resuable/permission-guard";
+import { Permissions } from "@/constant";
 
 export function NavProjects() {
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
 
-  const { onOpen } = useCreateProjectDialog();
+  const { onOpen } = useCreateProgramDialog();
   const { context, open, onOpenDialog, onCloseDialog } = useConfirmDialog();
 
   const orgId = useOrgId();
 
   const { isMobile } = useSidebar();
 
-  const projects = [
+  const programs = [
     {
       id: "pro-383dh",
       name: "Design Engineering",
@@ -62,7 +64,8 @@ export function NavProjects() {
     <>
       <SidebarGroup className="group-data-[collapsible=icon]:hidden">
         <SidebarGroupLabel className="w-full justify-between pr-0">
-          <span>Projects</span>
+          <span>Programs</span>
+          <PermissionsGuard requiredPermission={Permissions.CREATE_PROGRAM}>
           <button
             onClick={onOpen}
             type="button"
@@ -70,26 +73,30 @@ export function NavProjects() {
           >
             <Plus className="size-3.5" />
           </button>
+          </PermissionsGuard>
         </SidebarGroupLabel>
         <SidebarMenu className="h-[320px] scrollbar overflow-y-auto pb-2">
-          {projects?.length === 0 ? (
+          {programs?.length === 0 ? (
             <div className="pl-3">
               <p className="text-xs text-muted-foreground">
-                There is no projects in this Workspace yet. Projects you create
+                There is no program in this Organization yet. Programs you create
                 will show up here.
               </p>
+            <PermissionsGuard requiredPermission={Permissions.CREATE_PROGRAM}>
               <Button
                 variant="link"
                 type="button"
                 className="h-0 p-0 text-[13px] underline font-semibold mt-4"
                 onClick={onOpen}
               >
-                Create a project
+                Create a program
                 <ArrowRight />
               </Button>
+            </PermissionsGuard>
+
             </div>
           ) : (
-            projects.map((item) => {
+            programs.map((item) => {
               const projectUrl = item.url;
 
               return (
@@ -116,7 +123,7 @@ export function NavProjects() {
                         onClick={() => navigate(`${projectUrl}`)}
                       >
                         <Folder className="text-muted-foreground" />
-                        <span>View Project</span>
+                        <span>View program</span>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
@@ -124,7 +131,7 @@ export function NavProjects() {
                         onClick={() => onOpenDialog(item)}
                       >
                         <Trash2 className="text-muted-foreground" />
-                        <span>Delete Project</span>
+                        <span>Delete program</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

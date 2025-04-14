@@ -1,8 +1,8 @@
 import { parseAsBoolean, useQueryState } from "nuqs";
 
-const useCreateProjectDialog = () => {
+const useCreateProgramDialog = () => {
   const [open, setOpen] = useQueryState(
-    "new-project",
+    "new-program",
     parseAsBoolean.withDefault(false)
   );
   const onOpen = () => setOpen(true);
@@ -14,4 +14,4 @@ const useCreateProjectDialog = () => {
   };
 };
 
-export default useCreateProjectDialog;
+export default useCreateProgramDialog;

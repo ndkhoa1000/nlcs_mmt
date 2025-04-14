@@ -1,14 +1,14 @@
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import useCreateProjectDialog from "@/hooks/use-create-project-dialog";
+import useCreateProgramDialog from "@/hooks/use-create-project-dialog";
 import OrganizationAnalytics from "@/components/organization/org-analysics";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecentProjects from "@/components/organization/project/recent-projects";
 import RecentTasks from "@/components/organization/task/recent-tasks";
 import RecentMembers from "@/components/organization/member/recent-members";
 const OrganizationDashboard = () => {
-  const { onOpen } = useCreateProjectDialog();
+  const { onOpen } = useCreateProgramDialog();
   return (
     <main className="flex flex-1 flex-col py-4 md:pt-3">
       <div className="flex items-center justify-between space-y-2 mb-6">

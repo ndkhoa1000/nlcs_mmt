@@ -1,5 +1,25 @@
 import API from "./axios-client";
-import { AllMembersInOrganizationResponseType, AllOrganizationsResponseType, ChangeOrganizationMemberRoleResponseType, CreateOrganizationResponseType, CreateOrganizationType, CurrentUserResponseType, EditOrganizationResponseType, EditOrganizationType, LoginResponseType, loginType, MemberType, OrganizationAnalyticsResponseType, OrganizationByIdResponseType, registerType } from "@/types/api.type";
+import { 
+  AllMembersInOrganizationResponseType, 
+  AllOrganizationsResponseType, 
+  AllProgramsResponseType, 
+  ChangeOrganizationMemberRoleResponseType, 
+  CreateOrganizationResponseType, 
+  CreateOrganizationType, 
+  CreateProgramType, 
+  CurrentUserResponseType, 
+  EditOrganizationResponseType, 
+  EditOrganizationType, 
+  LoginResponseType, 
+  loginType, 
+  MemberType, 
+  OrganizationAnalyticsResponseType, 
+  OrganizationByIdResponseType, 
+  ProgramAnalyticsResponseType, 
+  ProgramResponseType, 
+  registerType,
+  UpdateProgramType 
+} from "@/types/api.type";
 
 export const loginMutationFn = async (data:loginType): Promise<LoginResponseType> => {
   const response = await API.post("/auth/login", data);
@@ -79,17 +99,40 @@ async(orgId:string) :Promise<AllMembersInOrganizationResponseType> => {
 
 //********* */
 //********* PROGRAM
-export const createProgramMutationFn = async () => {};
+export const createProgramMutationFn = 
+async (orgId:string,data:CreateProgramType):Promise<ProgramResponseType> => {
+  const response = await API.post(`program/organization/${orgId}/create`, data);
+  return response.data;
+};
 
-export const editProgramMutationFn = async () => {};
+export const editProgramMutationFn = 
+async (orgId:string,programId:string,data:UpdateProgramType):Promise<ProgramResponseType> => {
+  const response = await API.post(`program/${programId}/organization/${orgId}/update`, data);
+  return response.data;
+};
+export const getProgramsInOrganizationQueryFn = 
+async (orgId:string): Promise<AllProgramsResponseType> => {
+  const response = await API.get(`program/organization/${orgId}/all`);
+  return response.data;
+};
 
-export const getProgramsInOrganizationQueryFn = async () => {};
+export const getProgramByIdQueryFn = 
+async (orgId:string,programId:string):Promise<ProgramResponseType> => {
+  const response = await API.get(`program/${programId}/organization/${orgId}`);
+  return response.data;
+};
 
-export const getProgramByIdQueryFn = async () => {};
+export const getProgramAnalyticsQueryFn = 
+async (orgId:string,programId:string):Promise<ProgramAnalyticsResponseType> => {
+  const response = await API.get(`program/${programId}/organization/${orgId}/analytics`);
+  return response.data;
+};
 
-export const getProgramAnalyticsQueryFn = async () => {};
-
-export const deleteProgramMutationFn = async () => {};
+export const deleteProgramMutationFn = 
+async (orgId:string,programId:string):Promise<ProgramResponseType> => {
+  const response = await API.delete(`program/${programId}/organization/${orgId}/delete`);
+  return response.data;
+};
 
 //******* EVENT ********************************
 //************************* */

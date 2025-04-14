@@ -3,8 +3,8 @@ import SignIn from "@/page/auth/Sign-in";
 import SignUp from "@/page/auth/Sign-up";
 import OrganizationDashboard from "@/page/organization/Dashboard";
 import Members from "@/page/organization/Members";
-import ProjectDetails from "@/page/organization/ProjectDetails";
-import Settings from "@/page/organization/Settings";
+import ProgramDetails from "@/page/organization/ProjectDetails";
+import SettingsWithPermissions from "@/page/organization/Settings";
 import Tasks from "@/page/organization/Tasks";
 import { AUTH_ROUTES, BASE_ROUTE, PROTECTED_ROUTES } from "./routePaths";
 import InviteUser from "@/page/invite/InviteUser";
@@ -19,8 +19,8 @@ export const protectedRoutePaths = [
   { path: PROTECTED_ROUTES.ORGANIZATION, element: <OrganizationDashboard /> },
   { path: PROTECTED_ROUTES.EVENTS, element: <Tasks /> },
   { path: PROTECTED_ROUTES.MEMBERS, element: <Members /> },
-  { path: PROTECTED_ROUTES.SETTINGS, element: <Settings /> },
-  { path: PROTECTED_ROUTES.PROGRAM_DETAILS, element: <ProjectDetails /> },
+  { path: PROTECTED_ROUTES.SETTINGS, element: <SettingsWithPermissions /> },
+  { path: PROTECTED_ROUTES.PROGRAM_DETAILS, element: <ProgramDetails /> },
 ];
 
 export const baseRoutePaths = [
