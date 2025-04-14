@@ -12,7 +12,7 @@ const usePermissions = (
     if (user && organization) {
       const member = organization.members.find(
         (member) => {
-            return member.userId === user._id}
+            return member.userId._id === user._id}
       );
       if (member) {
         setPermissions(member.role.permission || []);

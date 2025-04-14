@@ -110,6 +110,7 @@ export const getOrganizationByIdService = async (orgId: string) => {
 
         //NOTE: return org and its member
         const members = await MemberModel.find({orgId})
+        .populate("userId", "name email profilePicture")
         .populate("role")
         .exec();
         const organizationWithMember = {...organization.toObject(), members};

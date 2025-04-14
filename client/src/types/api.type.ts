@@ -130,7 +130,28 @@ export type AllOrganizationsResponseType = {
 };
 
 export type OrganizationWithMembersType = OrganizationType & {
-  members: MemberType[];
+  members: {
+    _id: string;
+    userId: {
+      _id:string;
+      name:string;
+      email: string;
+      profilePicture: string | null;
+    };
+    orgId: string;
+    role: {
+      _id: string;
+      name: string;
+      // NOTE: for fix type: fix from roles in BE and then comeback to FE those files:
+      // NOTE: use-permission, *permission*.ts.ts
+      permission: PermissionType[];
+    };
+    isApproved: boolean;
+    volunteerHours: number;
+    joinAt: Date;
+    createAt: Date;
+    updateAt: Date;
+  }[];
 };
 
 
@@ -185,7 +206,26 @@ export type MemberType = {
 
 export type AllMembersInOrganizationResponseType = {
   message: string;
-  members: MemberType[];
+  members: {
+    _id: string;
+    userId: {
+      _id:string;
+      name:string;
+      email: string;
+      profilePicture: string | null;
+    };
+    orgId: string;
+    role: {
+      _id: string;
+      name: string;
+      permission: PermissionType[];
+    };
+    isApproved: boolean;
+    volunteerHours: number;
+    joinAt: Date;
+    createAt: Date;
+    updateAt: Date;
+  }[];
   roles: RoleType[];
 };
 
