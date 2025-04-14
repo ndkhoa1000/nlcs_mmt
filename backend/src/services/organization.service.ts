@@ -109,10 +109,10 @@ export const getOrganizationByIdService = async (orgId: string) => {
             throw new NotFoundException("Organization not found.");
 
         //NOTE: return org and its member
-        const member = await MemberModel.find({orgId})
+        const members = await MemberModel.find({orgId})
         .populate("role")
         .exec();
-        const organizationWithMember = {...organization.toObject(), member};
+        const organizationWithMember = {...organization.toObject(), members};
         
         return {organization: organizationWithMember};
     } catch(err){

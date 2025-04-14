@@ -6,11 +6,14 @@ import { OrganizationType, UserType } from "@/types/api.type";
 import useGetOrganizationQuery from "@/hooks/api/use-get-org";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import usePermissions from "@/hooks/use-permissions";
+import { PermissionType } from "@/constant";
 
 // Define the context shape
 type AuthContextType = {
   organization?: OrganizationType;
   user?: UserType;
+  hasPermission: (permission: PermissionType) => boolean;
   error: any;
   isLoading: boolean;
   isFetching: boolean;
@@ -55,11 +58,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [navigate, orgError]);
 
+  const permissions = usePermissions(user, organization);
+
+  const hasPermission = (permission:PermissionType): boolean =>{
+    return permissions.includes(permission);
+  }; 
   return (
     <AuthContext.Provider
       value={{
         organization,
         user,
+        hasPermission,
         error: authError ||orgError,
         isLoading: authLoading || orgLoading,
         isFetching,

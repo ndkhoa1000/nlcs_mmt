@@ -1,6 +1,7 @@
 import {
   EventPriorityEnumType,
   EventStatusEnumType,
+  PermissionType,
 } from "@/constant";
 
 // AUTH TYPES
@@ -129,7 +130,7 @@ export type AllOrganizationsResponseType = {
 };
 
 export type OrganizationWithMembersType = OrganizationType & {
-  member: MemberType[];
+  members: MemberType[];
 };
 
 
@@ -168,16 +169,12 @@ export type RoleType = {
 
 export type MemberType = {
   _id: string;
-  userId: {
-    _id: string;
-    name: string;
-    email: string;
-    profilePicture: string | null;
-  };
+  userId: string;
   orgId: string;
   role: {
     _id: string;
     name: string;
+    permission: PermissionType[];
   };
   isApproved: boolean;
   volunteerHours: number;
