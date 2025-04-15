@@ -2,7 +2,7 @@ import useOrgId from "@/hooks/use-org-id";
 import AnalyticsCard from "../common/analytics-card";
 import { useQuery } from "@tanstack/react-query";
 import { getProgramAnalyticsQueryFn } from "@/lib/api";
-import { Calendar, Clock, PauseCircle, CheckCircle, AlertCircle } from "lucide-react";
+import { Calendar, Clock, CheckCircle, AlertCircle, PauseCircle } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 const ProgramAnalytics = () => {
@@ -19,22 +19,20 @@ const ProgramAnalytics = () => {
   const programAnalysisList = data?.analysis;
   
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-      {/* Left column - large card */}
-      <div className="md:col-span-1 h-full">
+    <div className="grid grid-cols-3 gap-3">
+      <div className="col-span-1">
         <AnalyticsCard
           isLoading={isPending}
           title="Total Events"
           value={programAnalysisList?.totalEvent || 0}
-          variant="large"
           icon={Calendar}
           iconColor="text-indigo-500"
-          className="bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-950/30 dark:to-gray-900/50"
+          className="h-full bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-950/30 dark:to-gray-900/50"
+          variant="large"
         />
       </div>
       
-      {/* Right column - grid of 4 smaller cards */}
-      <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 h-full">
+      <div className="col-span-2 grid grid-cols-2 gap-3">
         <AnalyticsCard
           isLoading={isPending}
           title="Pending Events"

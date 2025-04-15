@@ -60,7 +60,7 @@ export const getProgramByIdService = async (orgId: string, programId: string) =>
     const program = await ProgramModel.findOne({
         _id: programId,
         organization: orgId
-    });
+    }).populate("createBy", "_id name profilePicture");
     if (!program)
         throw new NotFoundException("Program not found.")
 
