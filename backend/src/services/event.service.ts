@@ -64,21 +64,123 @@ export const createEventService = async (
     return { event };
 };
 
-export const getAllEventsService = async () => {
-    const numberOfEvents = await EventModel.countDocuments({});
-    const events = await EventModel.find({})
-    .sort({ createAt: -1 });
+export const getAllEventsService = async (
+    pagination: {
+      pageSize: number;
+      pageNumber: number;
+    }
+) => {
+    //Pagination Setup
+    const { pageSize, pageNumber } = pagination;
+    const skip = (pageNumber - 1) * pageSize;
 
-    return {numberOfEvents,events}
-}
+    const [events, totalCount] = await Promise.all([
+      EventModel.find({})
+        .skip(skip)
+        .limit(pageSize)
+        .sort({ createAt: -1 }),
+      EventModel.countDocuments({}),
+    ]);
 
-export const getAllEventsInOrgService = async (orgId: string) => {
-    const events = await EventModel.find({ organization: orgId})
-        .populate("assignedTo", "name profilePicture")
-        .populate("createBy", "name profilePicture")
-        .sort({ createAt: -1 });
+    const totalPages = Math.ceil(totalCount / pageSize);
 
-    return { events };
+    return {
+      events,
+      pagination: {
+        pageSize,
+        pageNumber,
+        totalCount,
+        totalPages,
+        skip,
+      },
+    };
+};
+
+export const getAllEventsInOrgService = async (
+    orgId: string,
+    filters: {
+      keyword?: string;
+      programId?: string;
+      status?: string[];
+      priority?: string[];
+      assignedTo?: string[];
+      registrationDeadline?: string;
+      startTime?: string;
+      endTime?: string;
+    },
+    pagination: {
+      pageSize: number;
+      pageNumber: number;
+    }
+) => {
+    const query: Record<string, any> = {
+      organization: orgId,
+    };
+  
+    if (filters.programId) {
+      query.program = filters.programId;
+    }
+  
+    if (filters.status && filters.status?.length > 0) {
+      query.status = { $in: filters.status };
+    }
+  
+    if (filters.priority && filters.priority?.length > 0) {
+      query.priority = { $in: filters.priority };
+    }
+  
+    if (filters.assignedTo && filters.assignedTo?.length > 0) {
+      query.assignedTo = { $in: filters.assignedTo };
+    }
+  
+    if (filters.keyword && filters.keyword !== undefined) {
+      query.title = { $regex: filters.keyword, $options: "i" };
+    }
+  
+    if (filters.registrationDeadline) {
+      query.registrationDeadline = {
+        $eq: new Date(filters.registrationDeadline),
+      };
+    }
+
+    if (filters.startTime) {
+      query.startTime = {
+        $eq: new Date(filters.startTime),
+      };
+    }
+
+    if (filters.endTime) {
+      query.endTime = {
+        $eq: new Date(filters.endTime),
+      };
+    }
+
+    //Pagination Setup
+    const { pageSize, pageNumber } = pagination;
+    const skip = (pageNumber - 1) * pageSize;
+  
+    const [events, totalCount] = await Promise.all([
+      EventModel.find(query)
+        .skip(skip)
+        .limit(pageSize)
+        .sort({ createAt: -1 })
+        .populate("assignedTo", "_id name profilePicture")
+        .populate("createBy", "_id name profilePicture"),
+      EventModel.countDocuments(query),
+    ]);
+  
+    const totalPages = Math.ceil(totalCount / pageSize);
+  
+    return {
+      events,
+      pagination: {
+        pageSize,
+        pageNumber,
+        totalCount,
+        totalPages,
+        skip,
+      },
+    };
 };
 
 export const getEventByIdService = async (orgId: string, eventId: string) => {

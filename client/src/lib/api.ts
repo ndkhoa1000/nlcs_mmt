@@ -4,13 +4,17 @@ import {
   AllOrganizationsResponseType, 
   AllProgramPayloadType, 
   AllProgramsResponseType, 
+  AllEventsResponseType,
+  AllEventsInOrgResponseType,
   ChangeOrganizationMemberRoleResponseType, 
   CreateOrganizationResponseType, 
   CreateOrganizationType, 
   CreateProgramType, 
+  CreateEventType,
   CurrentUserResponseType, 
   EditOrganizationResponseType, 
   EditOrganizationType, 
+  EventResponseType,
   LoginResponseType, 
   loginType, 
   MemberType, 
@@ -19,7 +23,9 @@ import {
   ProgramAnalyticsResponseType, 
   ProgramResponseType, 
   registerType,
-  UpdateProgramType 
+  UpdateProgramType,
+  UpdateEventType,
+  AllEventsPayloadType
 } from "@/types/api.type";
 
 export const loginMutationFn = async (data:loginType): Promise<LoginResponseType> => {
@@ -139,8 +145,92 @@ async (orgId:string,programId:string):Promise<ProgramResponseType> => {
 //******* EVENT ********************************
 //************************* */
 
-export const createEventMutationFn = async () => {};
+export const createEventMutationFn = async (
+  orgId: string, 
+  data: CreateEventType
+): Promise<EventResponseType> => {
+  const response = await API.post(`/event/organization/${orgId}/create`, data);
+  return response.data;
+};
 
-export const getAllEventsQueryFn = async () => {};
+export const getAllEventsQueryFn = async ({
+  pageNumber = 1,
+  pageSize = 10
+} = {}): Promise<AllEventsResponseType> => {
+  const queryParams = new URLSearchParams();
+  if (pageNumber) queryParams.append("pageNumber", pageNumber.toString());
+  if (pageSize) queryParams.append("pageSize", pageSize.toString());
 
-export const deleteEventMutationFn = async () => {};
+  const url = queryParams.toString() ? `/event/all?${queryParams}` : `/event/all`;
+  const response = await API.get(url);
+  return response.data;
+};
+
+export const getAllEventsInOrgQueryFn = async ({
+  orgId,
+  programId,
+  keyword,
+  assignedTo,
+  priority,
+  status,
+  registrationDeadline,
+  startTime,
+  endTime,
+  pageNumber = 1,
+  pageSize = 10
+}: AllEventsPayloadType): Promise<AllEventsInOrgResponseType> => {
+  const baseUrl = `/event/organization/${orgId}/all`;
+
+  const queryParams = new URLSearchParams();
+  
+  if (programId) queryParams.append("programId", programId);
+  if (keyword) queryParams.append("keyword", keyword);
+  
+  // Handle arrays properly
+  if (assignedTo && assignedTo.length > 0) {
+    assignedTo.forEach(userId => queryParams.append("assignedTo", userId));
+  }
+  
+  if (priority && priority.length > 0) {
+    priority.forEach(p => queryParams.append("priority", p));
+  }
+  
+  if (status && status.length > 0) {
+    status.forEach(s => queryParams.append("status", s));
+  }
+  
+  if (registrationDeadline) queryParams.append("registrationDeadline", registrationDeadline);
+  if (startTime) queryParams.append("startTime", startTime);
+  if (endTime) queryParams.append("endTime", endTime);
+  if (pageNumber) queryParams.append("pageNumber", pageNumber.toString());
+  if (pageSize) queryParams.append("pageSize", pageSize.toString());
+
+  const url = queryParams.toString() ? `${baseUrl}?${queryParams}` : baseUrl;
+  const response = await API.get(url);
+  return response.data;
+};
+
+export const getEventByIdQueryFn = async (
+  orgId: string, 
+  eventId: string
+): Promise<EventResponseType> => {
+  const response = await API.get(`/event/${eventId}/organization/${orgId}`);
+  return response.data;
+};
+
+export const updateEventMutationFn = async (
+  orgId: string,
+  eventId: string,
+  data: UpdateEventType
+): Promise<EventResponseType> => {
+  const response = await API.put(`/event/${eventId}/organization/${orgId}/update`, data);
+  return response.data;
+};
+
+export const deleteEventMutationFn = async (
+  orgId: string, 
+  eventId: string
+): Promise<EventResponseType> => {
+  const response = await API.delete(`/event/${eventId}/organization/${orgId}/delete`);
+  return response.data;
+};

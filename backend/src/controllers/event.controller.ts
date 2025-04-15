@@ -34,11 +34,18 @@ export const createEventController = asyncHandler(
 
 export const getAllEventsController = asyncHandler(
     async (req: Request, res: Response) => {
-        const { numberOfEvents,events } = await getAllEventsService();
+        const pageNumber = parseInt(req.query.pageNumber as string) || 1;
+        const pageSize = parseInt(req.query.pageSize as string) || 10;
+        
+        const { events, pagination } = await getAllEventsService({
+            pageSize,
+            pageNumber,
+        });
+        
         return res.status(HTTPSTATUS.OK).json({
             message: "All events fetched successfully.",
-            numberOfEvents: numberOfEvents,
-            events
+            events,
+            pagination
         });
     }
 );
@@ -50,11 +57,41 @@ export const getAllEventsInOrganizationController = asyncHandler(
 
         const {role} = await getMemberRoleInWorkspaceService(userId, orgId);
         roleGuard(role, [Permissions.VIEW_ONLY]);
+        
+        const programId = req.query.programId as string;
+        const status = req.query.status as string[] | undefined;
+        const priority = req.query.priority as string[] | undefined;
+        const assignedTo = req.query.assignedTo as string[] | undefined;
+        const keyword = req.query.keyword as string;
+        const registrationDeadline = req.query.registrationDeadline as string;
+        const startTime = req.query.startTime as string;
+        const endTime = req.query.endTime as string;
+        
+        const pageNumber = parseInt(req.query.pageNumber as string) || 1;
+        const pageSize = parseInt(req.query.pageSize as string) || 10;
 
-        const { events } = await getAllEventsInOrgService(orgId);
+        const { events, pagination } = await getAllEventsInOrgService(
+            orgId,
+            {
+                programId,
+                keyword,
+                status,
+                priority,
+                assignedTo,
+                registrationDeadline,
+                startTime,
+                endTime
+            },
+            {
+                pageSize,
+                pageNumber
+            }
+        );
+        
         return res.status(HTTPSTATUS.OK).json({
             message: "Events fetched successfully.",
-            events
+            events,
+            pagination
         });
     }
 );

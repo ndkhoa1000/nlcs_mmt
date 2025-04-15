@@ -400,8 +400,39 @@ export type AllEventsResponseType = {
 export type AllEventsInOrgResponseType = {
   message: string;
   events: EventType[];
+  pagination: PaginationType;
 };
-// ATTENDANCE TYPES
+
+export type AllEventsPayloadType = {
+  orgId: string;
+  programId?: string;
+  keyword?: string;
+  status?: string[];
+  priority?: string[];
+  assignedTo?: string[];
+  registrationDeadline?: string;
+  startTime?: string;
+  endTime?: string;
+  pageNumber?: number;
+  pageSize?: number;
+};
+
+export type AllTaskPayloadType ={
+  orgId: string;
+  programId?: string | null;
+
+  priority?: EventPriorityEnumType| null;
+  status?: EventStatusEnumType | null;
+  registrationDeadline?: string | null;
+  assignedTo?: string | null;
+  startTime?: string | null;
+  endTime?: string | null;
+  
+  keyword?: string | null;
+  pageNumber?: number | null;
+  pageSize?: number | null;
+}
+//*****************ATTENDANCE TYPES**********************/
 export type AttendanceType = {
   _id: string;
   eventId: {
