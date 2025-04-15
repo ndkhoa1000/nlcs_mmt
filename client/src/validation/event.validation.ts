@@ -6,14 +6,13 @@ import {
     stringArraySchema,
     dateSchema
 } from "./common.validation";
-import { EventPriorityEnum, EventStatusEnum } from "../enums/event.enums";
-import { eventCategories } from "../enums/eventCategories.enums";
+import { EventPriorityEnum, EventStatusEnum, eventCategoriesEnums } from "@/constant";
 
 export const createEventSchema = z.object({
     title: nameSchema,
     description: descriptionSchema.optional(),
-    program: objectIdSchema.optional(),
-    category: z.array(z.nativeEnum(eventCategories)).optional(),
+    program: z.string().optional(),
+    category: z.array(z.nativeEnum(eventCategoriesEnums)).optional(),
     location: z.string().trim().min(1),
     status: z.nativeEnum(EventStatusEnum).optional(),
     priority: z.nativeEnum(EventPriorityEnum).optional(),

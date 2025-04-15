@@ -359,10 +359,10 @@ export type CreateEventType = {
   location: string;
   status?: EventStatusEnumType;
   priority?: EventPriorityEnumType;
-  assignedTo?: string[];
-  cohost?: string[];
+  assignedTo?: string[] | [];
+  cohost?: string[] | [];
   requiredVolunteer: number;
-  registrationDeadline?: Date;
+  registrationDeadline?: Date |null;
   startTime?: Date | null;
   endTime?: Date | null;
   documents?: string[];

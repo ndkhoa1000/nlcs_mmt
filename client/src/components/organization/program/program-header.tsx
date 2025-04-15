@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import CreateTaskDialog from "../task/create-task-dialog";
+import CreateEventDialog from "../task/create-event-dialog";
 import EditProgramDialog from "./edit-program-dialog";
 import useOrgId from "@/hooks/use-org-id";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -172,7 +172,7 @@ const ProgramHeader = () => {
             {renderProgramInfo()}
           </div>
         </div>
-        <CreateTaskDialog projectId={programId} />
+        <CreateEventDialog programId={programId} />
       </div>
     </div>
   );
