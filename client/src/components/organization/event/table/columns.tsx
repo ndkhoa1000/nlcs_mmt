@@ -14,6 +14,7 @@ import {
   formatStatusToEnum,
   getAvatarColor,
   getAvatarFallbackText,
+  StatusBadgeVariant,
 } from "@/lib/helper";
 import { priorities, statuses } from "./data";
 import { EventType } from "@/types/api.type";
@@ -171,32 +172,11 @@ export const getColumns = (programId?: string): ColumnDef<EventType>[] => {
           return <span>{statusValue}</span>;
         }
 
-        // Map status to appropriate variant for Badge component
-        const statusKey = formatStatusToEnum(statusValue) as EventStatusEnumType;
         
-        // Map EventStatusEnumType to appropriate badge variant
-        const getBadgeVariantForStatus = (status: EventStatusEnumType) => {
-          switch (status) {
-            case "PENDING":
-              return "secondary";
-            case "ACTIVE":
-              return "HIGH";
-            case "COMPLETED":
-              return "URGENT";
-            case "CANCELLED":
-              return "destructive";
-            case "POSTPONED":
-              return "MEDIUM";
-            default:
-              return "outline";
-          }
-        };
-        
-        const badgeVariant = getBadgeVariantForStatus(statusKey);
         return (
           <div className="flex items-center">
             <Badge
-              variant={badgeVariant}
+              variant={StatusBadgeVariant(statusValue as EventStatusEnumType)}
               className="flex p-1 gap-1 !bg-transparent font-medium !shadow-none uppercase border-0"
             >
               <span>{status.label}</span>

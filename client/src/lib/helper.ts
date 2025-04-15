@@ -1,3 +1,5 @@
+import { EventStatusEnumType } from "@/constant";
+
 //THE UPDATED ONE BECAUSE OF THE FILTERS ->  Take Note ->
 export const transformOptions = (
   options: string[],
@@ -50,3 +52,27 @@ export const getAvatarFallbackText = (name: string) => {
     .slice(0, 2); // Ensure only two initials
   return initials || "NA";
 };
+export const StatusBadgeVariant = (statusValue:EventStatusEnumType) => {
+  // Map status to appropriate variant for Badge component
+  const statusKey = formatStatusToEnum(statusValue) as EventStatusEnumType;
+        
+  // Map EventStatusEnumType to appropriate badge variant
+  const getBadgeVariantForStatus = (status: EventStatusEnumType) => {
+    switch (status) {
+      case "PENDING":
+        return "secondary";
+      case "ACTIVE":
+        return "HIGH";
+      case "COMPLETED":
+        return "URGENT";
+      case "CANCELLED":
+        return "destructive";
+      case "POSTPONED":
+        return "MEDIUM";
+      default:
+        return "outline";
+    }
+  };
+  
+  return getBadgeVariantForStatus(statusKey)
+}

@@ -1,108 +1,107 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 import useOrgId from "@/hooks/use-org-id";
+import { getProgramsInOrganizationQueryFn } from "@/lib/api";
+import { getAvatarColor, getAvatarFallbackText } from "@/lib/helper";
+import { format } from "date-fns";
 
-const RecentProjects = () => {
+const RecentPrograms = () => {
   const orgId = useOrgId();
+  
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["recentPrograms", orgId],
+    queryFn: () => getProgramsInOrganizationQueryFn({ 
+      orgId, 
+      pageSize: 10, 
+      pageNumber: 1 
+    }),
+    enabled: !!orgId
+  });
 
-  const projects = [
-    {
-      emoji: "🚀",
-      name: "Space Exploration Initiative",
-      date: "December 28, 2024",
-      createdBy: "AB",
-    },
-    {
-      emoji: "🛒",
-      name: "E-Commerce Platform Revamp",
-      date: "December 27, 2024",
-      createdBy: "JD",
-    },
-    {
-      emoji: "🌱",
-      name: "Sustainability Research",
-      date: "December 26, 2024",
-      createdBy: "MJ",
-    },
-    {
-      emoji: "📚",
-      name: "Educational Content Development",
-      date: "December 25, 2024",
-      createdBy: "SS",
-    },
-    {
-      emoji: "🏗️",
-      name: "Urban Infrastructure Design",
-      date: "December 24, 2024",
-      createdBy: "RT",
-    },
-    {
-      emoji: "🎨",
-      name: "Creative Branding Campaign",
-      date: "December 23, 2024",
-      createdBy: "KL",
-    },
-    {
-      emoji: "⚙️",
-      name: "Automation Workflow Setup",
-      date: "December 22, 2024",
-      createdBy: "AK",
-    },
-    {
-      emoji: "💼",
-      name: "Corporate Strategy Alignment",
-      date: "December 21, 2024",
-      createdBy: "CN",
-    },
-    {
-      emoji: "🧬",
-      name: "Genomics Research Project",
-      date: "December 20, 2024",
-      createdBy: "LH",
-    },
-    {
-      emoji: "🌍",
-      name: "Global Outreach Program",
-      date: "December 19, 2024",
-      createdBy: "ZW",
-    },
-  ];
+  if (isLoading) {
+    return <LoadingSkeleton />;
+  }
+
+  if (error) {
+    return <div className="text-red-500">Failed to load recent programs</div>;
+  }
+
+  const programs = data?.programs || [];
+
+  if (programs.length === 0) {
+    return <div className="text-muted-foreground p-4 text-center">No programs found</div>;
+  }
+
+  const emojis = ["🚀", "🌱", "🔍", "📊", "🏆", "🎯", "📚", "⚡", "🎨", "🛠️"]; 
 
   return (
     <div className="flex flex-col pt-2">
       <ul role="list" className="space-y-2">
-        {projects.map((item, index) => (
-          <li
-            key={index}
-            role="listitem"
-            className="shadow-none cursor-pointer border-0 py-2 hover:bg-gray-50 transition-colors ease-in-out "
-          >
-            <Link
-              to={`/oganization/${orgId}/project/:p383dh`}
-              className="grid gap-8 p-0"
+        {programs.map((program, index) => {
+          const emoji = emojis[index % emojis.length];
+          const createdBy = program.createBy;
+          const name = createdBy?.name || "Unknown";
+          const initials = getAvatarFallbackText(name);
+          const avatarColor = getAvatarColor(name);
+          const formattedDate = program.createAt ? format(new Date(program.createAt), "MMMM d, yyyy") : "Unknown date";
+          
+          return (
+            <li
+              key={program._id}
+              role="listitem"
+              className="shadow-none cursor-pointer border-0 py-2 hover:bg-gray-50 transition-colors ease-in-out rounded-md"
             >
-              <div className="flex items-start gap-2">
-                <div className="text-xl !leading-[1.4rem]">{item.emoji}</div>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    {item.name}
-                  </p>
-                  <p className="text-sm text-muted-foreground">{item.date}</p>
+              <Link
+                to={`/organization/${orgId}/program/${program._id}`}
+                className="grid gap-8 p-2"
+              >
+                <div className="flex items-start gap-2">
+                  <div className="text-xl !leading-[1.4rem]">{emoji}</div>
+                  <div className="grid gap-1">
+                    <p className="text-sm font-medium leading-none">
+                      {program.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground">{formattedDate}</p>
+                  </div>
+                  <div className="ml-auto flex items-center gap-4">
+                    <span className="text-sm text-gray-500">Created by</span>
+                    <Avatar className="hidden h-9 w-9 sm:flex">
+                      <AvatarImage src={createdBy?.profilePicture || ""} alt={name} />
+                      <AvatarFallback className={avatarColor}>{initials}</AvatarFallback>
+                    </Avatar>
+                  </div>
                 </div>
-                <div className="ml-auto flex items-center gap-4">
-                  <span className="text-sm text-gray-500">Created by</span>
-                  <Avatar className="hidden h-9 w-9 sm:flex">
-                    <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                    <AvatarFallback>{item.createdBy}</AvatarFallback>
-                  </Avatar>
-                </div>
-              </div>
-            </Link>
-          </li>
-        ))}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
 };
 
-export default RecentProjects;
+const LoadingSkeleton = () => (
+  <div className="flex flex-col pt-2">
+    <ul role="list" className="space-y-2">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <li key={i} className="shadow-none cursor-pointer border-0 py-2 p-2">
+          <div className="flex items-start gap-2">
+            <Skeleton className="h-6 w-6 rounded" />
+            <div className="grid gap-1 flex-1">
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-3 w-32" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-9 w-9 rounded-full" />
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+export default RecentPrograms;
