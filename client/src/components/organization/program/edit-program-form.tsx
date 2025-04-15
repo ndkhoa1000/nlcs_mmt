@@ -42,10 +42,11 @@ export default function EditProgramForm({
   const queryClient = useQueryClient();
   const { hasPermission } = useAuthContext();
   const canEditProgram = hasPermission(Permissions.EDIT_PROGRAM);
+  const programId = program?._id as string;
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: z.infer<typeof updateProgramSchema>) => 
-      editProgramMutationFn(orgId, program._id, data),
+      editProgramMutationFn(orgId, programId, data),
   });
 
   // Initialize form with program data directly in defaultValues
@@ -91,7 +92,7 @@ export default function EditProgramForm({
           queryKey: ["allPrograms", orgId]
         });
         queryClient.invalidateQueries({
-          queryKey: ["program", program._id]
+          queryKey: ["program", programId]
         });
         if (onClose) onClose();
       },
