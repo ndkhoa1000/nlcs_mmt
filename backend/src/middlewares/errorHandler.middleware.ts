@@ -2,6 +2,7 @@ import { ErrorRequestHandler } from 'express';
 import { HTTPSTATUS } from '../config/http.config';
 import { z,ZodError } from 'zod';
 import { ErrorCodeEnum } from '../enums/error-code.enums';
+import { AppError } from '../utils/appError';
 
 const formatZodError = (error: z.ZodError) => {
     const errors = error.issues.map((error) => ({
@@ -27,6 +28,12 @@ export const errorHandler: ErrorRequestHandler = (error, req, res, next): any =>
         })
     }
 
+    if (error instanceof AppError) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          errorCode: error.errorCode,
+        });
+    }
     return res.status(HTTPSTATUS.INTERNAL_SERVER_ERROR).json({
         message:"Internal Server Error",
         error: error?.message || "Unknown error occurred."

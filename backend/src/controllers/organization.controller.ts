@@ -43,11 +43,15 @@ export const getAllOrganizationsUserIsMemberController = asyncHandler(
 
 export const getOrganizationByIdController = asyncHandler(
     async (req: Request, res: Response) => {
+        const userId = String(req.user?._id);
         const orgId = objectIdSchema.parse(req.params.id);
+
+        const {role} = await getMemberRoleInWorkspaceService(userId,orgId);
+        roleGuard(role, [Permissions.VIEW_ONLY]);
 
         const {organization} = await getOrganizationByIdService(orgId);
         return res.status(HTTPSTATUS.OK).json({
-            message: "Organization updated.",
+            message: "Organization fetch successfully.",
             organization
         });
     }
@@ -113,10 +117,10 @@ export const deleteOrganizationByIdController = asyncHandler(
         const {role} = await getMemberRoleInWorkspaceService(userId,orgId);
         roleGuard(role, [Permissions.DELETE_ORGANIZATION]);
 
-        const {currentOrg} = await deleteOrganizationByIdService(userId, orgId);
+        const {currentOrgId} = await deleteOrganizationByIdService(userId, orgId);
         return res.status(HTTPSTATUS.OK).json({
             message: "Organization deleted.",
-            currentOrg
+            currentOrgId
         });
     }
 );

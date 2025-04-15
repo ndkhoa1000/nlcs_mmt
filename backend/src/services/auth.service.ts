@@ -35,20 +35,20 @@ export const loginOrCreateAccountService = async (data:{
                     // random pwd to pass userModel validation for Oath user
                     password: `oauth-${Math.random().toString(36).substring(2)}` 
                 });
+                await user.save({session});
+                
+                const account = new accountModel({
+                    userId: user._id,
+                    provider: provider,
+                    providerId: providerId,
+                });
+                await account.save({session});
+                
+                await session.commitTransaction();
+                console.log('commit transaction...');
+                session.endSession();
+                console.log('session end. Finish.');
             }
-            await user.save({session});
-
-            const account = new accountModel({
-                userId: user._id,
-                provider: provider,
-                providerId: providerId,
-            });
-            await account.save({session});
-
-            await session.commitTransaction();
-            console.log('commit transaction...');
-            session.endSession();
-            console.log('session end. Finish.');
             return {user};
         } catch (error) {
             console.log("Error during session...", error)

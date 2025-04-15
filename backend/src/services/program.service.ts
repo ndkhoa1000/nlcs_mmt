@@ -38,18 +38,29 @@ export const createProgramService = async(
         return {program}
 }
 
-export const getAllProgramsService = async(userId: string, orgId: string) =>{
+export const getAllProgramsService = async(
+    orgId: string,
+    pageSize: number,
+    pageNumber: number
+) =>{
+    const totalCount = await ProgramModel.countDocuments({organization: orgId});
+    const skip = (pageNumber -1)*pageSize;
     const programs = await ProgramModel.find({organization: orgId})
+    .skip(skip)
+    .limit(pageSize)
     .populate("createBy", "_id name profilePicture")
+    .sort({createAt:-1})
 
-    return {programs};
+    const totalPages =Math.ceil(totalCount/pageSize);
+
+    return { programs, totalCount, totalPages, skip };
 }
 
 export const getProgramByIdService = async (orgId: string, programId: string) =>{
     const program = await ProgramModel.findOne({
         _id: programId,
         organization: orgId
-    });
+    }).populate("createBy", "_id name profilePicture");
     if (!program)
         throw new NotFoundException("Program not found.")
 
@@ -91,25 +102,25 @@ export const getProgramAnalyticsService = async (orgId:string, programId:string)
     const totalPendingEvent = await EventModel.countDocuments({
         organization:orgId,
         program: programId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.PENDING
     });
     const totalActiveEvent = await EventModel.countDocuments({
         organization:orgId,
         program: programId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.ACTIVE
     });
     const totalCompleteEvent = await EventModel.countDocuments({
         organization:orgId,
         program: programId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.COMPLETED
     });
     const totalPostponedEvent = await EventModel.countDocuments({
         organization:orgId,
         program: programId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.POSTPONED
     });
     const analysis = {

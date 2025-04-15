@@ -9,6 +9,7 @@ import ProgramModel from "../models/program.model";
 import EventModel from "../models/event.model";
 import AttendanceModel from "../models/attendance.model";
 import { EventStatusEnum } from "../enums/event.enums";
+import { ErrorCodeEnum } from "../enums/error-code.enums";
 
 // NOTE: may not need transaction for simple service.
 export const createOrganizationService = async(
@@ -101,18 +102,23 @@ export const getAllOrganizationsUserIsMemberService = async(userId: string) => {
 };
 
 export const getOrganizationByIdService = async (orgId: string) => {
-    const organization = await OrganizationModel.findById(orgId)
+    try{
+        const organization = await OrganizationModel.findById(orgId);
 
-    if (!organization)
-        throw new NotFoundException("Organization not found.");
+        if (!organization)
+            throw new NotFoundException("Organization not found.");
 
-    //NOTE: return org and its member
-    const member = await MemberModel.find({orgId})
-    .populate("role")
-    .exec();
-    const organizationWithMember = {...organization.toObject(), member};
-    
-    return {organization: organizationWithMember};
+        //NOTE: return org and its member
+        const members = await MemberModel.find({orgId})
+        .populate("userId", "name email profilePicture")
+        .populate("role")
+        .exec();
+        const organizationWithMember = {...organization.toObject(), members};
+        
+        return {organization: organizationWithMember};
+    } catch(err){
+        throw new BadRequestException("Invalid organization Id.");
+    }
 }   
 
 export const getOrganizationMembersService = async (orgId: string) => {
@@ -174,30 +180,30 @@ export const updateOrganizationByIdService = async (
 export const getOrganizationAnalyticsService = async(userId: string, orgId: string) => {
     const currentDate = new Date();
 
-    const totalsProgram = await ProgramModel.countDocuments({organization: orgId});
+    const totalProgram = await ProgramModel.countDocuments({organization: orgId});
     const totalEvent = await EventModel.countDocuments({organization:orgId});
     const totalPendingEvent = await EventModel.countDocuments({
         organization:orgId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.PENDING
     });
     const totalActiveEvent = await EventModel.countDocuments({
         organization:orgId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.ACTIVE
     });
     const totalCompleteEvent = await EventModel.countDocuments({
         organization:orgId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.COMPLETED
     });
     const totalPostponedEvent = await EventModel.countDocuments({
         organization:orgId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.POSTPONED
     });
     const analysis = {
-        totalsProgram,
+        totalProgram,
         totalEvent,
         totalPendingEvent,
         totalActiveEvent,
@@ -243,7 +249,8 @@ export const deleteOrganizationByIdService = async(userId: string, orgId: string
         await OrganizationModel.deleteOne({_id: orgId}).session(session);
         await session.commitTransaction();
         session.endSession();
-        return {currentOrg: organization};
+        console.log('[deleteOrganizationService]: End session.');
+        return {currentOrgId: user.currentOrganization};
     } catch (error) {
         console.log("Error during session...", error);
         await session.abortTransaction();

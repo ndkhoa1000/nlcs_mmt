@@ -11,13 +11,13 @@ export const googleLoginCallback = asyncHandler(
     async(req: Request, res: Response) => {
     const currentOrganization = req.user?.currentOrganization;
 
-    if (!currentOrganization){
+    if (currentOrganization){
         return res.redirect(
-            `${config.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure` 
+            `${config.FRONTEND_ORIGIN}/organization/${currentOrganization}`
         )
     }
     return res.redirect(
-        `${config.FRONTEND_ORIGIN}/organization/${currentOrganization}`
+        `${config.FRONTEND_ORIGIN}/organization/_`
     )
 })
 

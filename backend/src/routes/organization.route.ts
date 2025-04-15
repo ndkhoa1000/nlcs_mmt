@@ -32,4 +32,6 @@ organizationRoutes.put("/:id/member/role/change", changeOrganizationMemberRoleCo
 organizationRoutes.delete("/:orgId/member/:id/ban", banMemberController);
 organizationRoutes.delete("/:orgId/leave", leaveOrganizationController); 
 
+//NOTE: define public routes for search and join org, search and join event later
+//NOTE: all the route for org now must be authorized to access.
 export default organizationRoutes;
