@@ -126,7 +126,7 @@ export function OrganizationSwitcher() {
                   onClick={() => onSelect(organization)}
                   className="gap-2 p-2 !cursor-pointer"
                 >
-                  <div className="flex size-6 items-center justify-center rounded-sm border">
+                  <div className="flex w-6 h-6 items-center justify-center rounded-sm border">
                     {organization?.name?.split(" ")?.[0]?.charAt(0)}
                   </div>
                   {organization.name}

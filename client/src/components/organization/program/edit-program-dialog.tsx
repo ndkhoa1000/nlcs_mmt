@@ -1,10 +1,10 @@
 import { Edit3 } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import EditProjectForm from "./edit-project-form";
-import { ProjectType } from "@/types/api.type";
+import EditProgramForm from "./edit-program-form";
+import { ProgramType } from "@/types/api.type";
 import { useState } from "react";
 
-const EditProjectDialog = (props: { project?: ProjectType }) => {
+const EditProgramDialog = (props: { program: ProgramType }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const onClose = () => {
@@ -19,11 +19,11 @@ const EditProjectDialog = (props: { project?: ProjectType }) => {
           </button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-lg border-0">
-          <EditProjectForm project={props.project} onClose={onClose} />
+          <EditProgramForm program={props.program} onClose={onClose} />
         </DialogContent>
       </Dialog>
     </div>
   );
 };
 
-export default EditProjectDialog;
+export default EditProgramDialog;

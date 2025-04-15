@@ -38,11 +38,22 @@ export const createProgramService = async(
         return {program}
 }
 
-export const getAllProgramsService = async(userId: string, orgId: string) =>{
+export const getAllProgramsService = async(
+    orgId: string,
+    pageSize: number,
+    pageNumber: number
+) =>{
+    const totalCount = await ProgramModel.countDocuments({organization: orgId});
+    const skip = (pageNumber -1)*pageSize;
     const programs = await ProgramModel.find({organization: orgId})
+    .skip(skip)
+    .limit(pageSize)
     .populate("createBy", "_id name profilePicture")
+    .sort({createAt:-1})
 
-    return {programs};
+    const totalPages =Math.ceil(totalCount/pageSize);
+
+    return { programs, totalCount, totalPages, skip };
 }
 
 export const getProgramByIdService = async (orgId: string, programId: string) =>{

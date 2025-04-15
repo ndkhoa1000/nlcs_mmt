@@ -2,6 +2,7 @@ import API from "./axios-client";
 import { 
   AllMembersInOrganizationResponseType, 
   AllOrganizationsResponseType, 
+  AllProgramPayloadType, 
   AllProgramsResponseType, 
   ChangeOrganizationMemberRoleResponseType, 
   CreateOrganizationResponseType, 
@@ -107,12 +108,13 @@ async (orgId:string,data:CreateProgramType):Promise<ProgramResponseType> => {
 
 export const editProgramMutationFn = 
 async (orgId:string,programId:string,data:UpdateProgramType):Promise<ProgramResponseType> => {
-  const response = await API.post(`program/${programId}/organization/${orgId}/update`, data);
+  const response = await API.put(`program/${programId}/organization/${orgId}/update`, data);
   return response.data;
 };
 export const getProgramsInOrganizationQueryFn = 
-async (orgId:string): Promise<AllProgramsResponseType> => {
-  const response = await API.get(`program/organization/${orgId}/all`);
+async ({orgId, pageSize = 5, pageNumber=1} : AllProgramPayloadType)
+:Promise<AllProgramsResponseType> => {
+  const response = await API.get(`program/organization/${orgId}/all?pageSize=${pageSize}&pageNumber=${pageNumber}`);
   return response.data;
 };
 

@@ -298,19 +298,19 @@ export type ProgramAnalyticsResponseType = {
 };
 
 // NOTE: for pagination.
-// //ALL PROGRAM IN WORKSPACE TYPE
-// export type AllProgramPayloadType = {
-//   workspaceId: string;
-//   pageNumber?: number;
-//   pageSize?: number;
-//   keyword?: string;
-//   skip?: boolean;
-// };
+//ALL PROGRAM IN ORG TYPE
+export type AllProgramPayloadType = {
+  orgId: string;
+  pageNumber?: number;
+  pageSize?: number;
+  keyword?: string;
+  skip?: boolean;
+};
 
 export type AllProgramsResponseType = {
   message: string;
   programs: ProgramType[];
-  // pagination: PaginationType; //NOTE for filter
+  pagination: PaginationType; 
 };
 
 //********** */ EVENT TYPES ************************

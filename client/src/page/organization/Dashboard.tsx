@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import useCreateProgramDialog from "@/hooks/use-create-project-dialog";
 import OrganizationAnalytics from "@/components/organization/org-analysics";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import RecentProjects from "@/components/organization/project/recent-projects";
+import RecentProjects from "@/components/organization/program/recent-programs";
 import RecentTasks from "@/components/organization/task/recent-tasks";
 import RecentMembers from "@/components/organization/member/recent-members";
 const OrganizationDashboard = () => {

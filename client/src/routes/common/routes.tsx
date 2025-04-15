@@ -3,7 +3,7 @@ import SignIn from "@/page/auth/Sign-in";
 import SignUp from "@/page/auth/Sign-up";
 import OrganizationDashboard from "@/page/organization/Dashboard";
 import Members from "@/page/organization/Members";
-import ProgramDetails from "@/page/organization/ProjectDetails";
+import ProgramDetails from "@/page/organization/ProgramDetails";
 import SettingsWithPermissions from "@/page/organization/Settings";
 import Tasks from "@/page/organization/Tasks";
 import { AUTH_ROUTES, BASE_ROUTE, PROTECTED_ROUTES } from "./routePaths";

@@ -33,11 +33,23 @@ export const getAllProgramsController = asyncHandler(
 
         const {role} = await getMemberRoleInWorkspaceService(userId,orgId);
         roleGuard(role, [Permissions.VIEW_ONLY]);
+        
+        const pageSize = parseInt(req.query.pageSize as string) || 10;
+        const pageNumber = parseInt(req.query.pageNumber as string) || 1;
 
-        const {programs} = await getAllProgramsService(userId, orgId);
+        const {programs, totalCount, totalPages, skip } = 
+        await getAllProgramsService(orgId, pageSize, pageNumber);
         return res.status(HTTPSTATUS.OK).json({
-            message: "fetch all programs. successfully.",
-            programs
+            message: "fetch all programs successfully.",
+            programs,
+            pagination:{
+                totalCount,
+                pageSize,
+                pageNumber,
+                totalPages,
+                skip,
+                limit: pageSize,
+            }
         });
     }
 );

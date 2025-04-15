@@ -1,5 +1,5 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import CreateProgramForm from "@/components/organization/project/create-program-form";
+import CreateProgramForm from "@/components/organization/program/create-program-form";
 import useCreateProgramDialog from "@/hooks/use-create-project-dialog";
 
 const CreateProgramDialog = () => {

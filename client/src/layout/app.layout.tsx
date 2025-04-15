@@ -4,7 +4,7 @@ import { AuthProvider } from "@/context/auth-provider";
 import Asidebar from "@/components/asidebar/asidebar";
 import Header from "@/components/header";
 import CreateOrganizationDialog from "@/components/organization/create-org-dialog";
-import CreateProgramDialog from "@/components/organization/project/create-program-dialog";
+import CreateProgramDialog from "@/components/organization/program/create-program-dialog";
 
 const AppLayout = () => {
   return (
