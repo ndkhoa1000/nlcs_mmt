@@ -102,25 +102,25 @@ export const getProgramAnalyticsService = async (orgId:string, programId:string)
     const totalPendingEvent = await EventModel.countDocuments({
         organization:orgId,
         program: programId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.PENDING
     });
     const totalActiveEvent = await EventModel.countDocuments({
         organization:orgId,
         program: programId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.ACTIVE
     });
     const totalCompleteEvent = await EventModel.countDocuments({
         organization:orgId,
         program: programId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.COMPLETED
     });
     const totalPostponedEvent = await EventModel.countDocuments({
         organization:orgId,
         program: programId,
-        dueDate: {$lt: currentDate},
+        startTime: {$lt: currentDate},
         status: EventStatusEnum.POSTPONED
     });
     const analysis = {

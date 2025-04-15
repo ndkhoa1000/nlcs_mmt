@@ -19,7 +19,7 @@ const ProgramHeader = () => {
   const orgId = useOrgId();
   
   const { data, isPending, isError } = useQuery({
-    queryKey: ["singleProject", programId],
+    queryKey: ["program", programId],
     queryFn: () =>
       getProgramByIdQueryFn(
         orgId,
