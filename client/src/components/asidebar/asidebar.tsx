@@ -27,7 +27,7 @@ import Logo from "@/components/logo";
 import LogoutDialog from "./logout-dialog";
 import { OrganizationSwitcher } from "./organization-switcher";
 import { NavMain } from "./nav-main";
-import { NavProjects } from "./nav-projects";
+import { NavPrograms } from "./nav-programs";
 import { Separator } from "../ui/separator";
 import { useAuthContext } from "@/context/auth-provider";
 import { AvatarImage } from "@radix-ui/react-avatar";
@@ -63,7 +63,7 @@ const Asidebar = () => {
               <Separator />
               <NavMain />
               <Separator />
-              <NavProjects />
+              <NavPrograms />
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>

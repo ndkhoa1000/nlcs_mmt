@@ -31,7 +31,7 @@ import { PaginationType } from "@/types/api.type";
 import { toast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback} from "@radix-ui/react-avatar";
 
-export function NavProjects() {
+export function NavPrograms() {
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
@@ -103,7 +103,7 @@ export function NavProjects() {
     <>
       <SidebarGroup className="group-data-[collapsible=icon]:hidden">
         <SidebarGroupLabel className="w-full justify-between pr-0">
-          <span>Projects</span>
+          <span>Programs</span>
 
           <PermissionsGuard requiredPermission={Permissions.CREATE_PROGRAM}>
             <button
