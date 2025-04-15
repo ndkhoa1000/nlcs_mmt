@@ -1,5 +1,5 @@
-import CreateEventDialog from "@/components/organization/task/create-event-dialog";
-import TaskTable from "@/components/organization/task/task-table";
+import CreateEventDialog from "@/components/organization/event/create-event-dialog";
+import TaskTable from "@/components/organization/event/event-table";
 
 export default function Events() {
   return (

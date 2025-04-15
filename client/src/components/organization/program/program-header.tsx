@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import CreateEventDialog from "../task/create-event-dialog";
+import CreateEventDialog from "../event/create-event-dialog";
 import EditProgramDialog from "./edit-program-dialog";
 import useOrgId from "@/hooks/use-org-id";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";

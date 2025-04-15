@@ -6,7 +6,7 @@ import {
 } from "@/constant";
 import { parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
 
-const useTaskTableFilter = () => {
+const useEventTableFilter = () => {
   return useQueryStates({
     status: parseAsStringEnum<EventStatusEnumType>(
       Object.values(EventStatusEnum)
@@ -15,9 +15,9 @@ const useTaskTableFilter = () => {
       Object.values(EventPriorityEnum)
     ),
     keyword: parseAsString,
-    projectId: parseAsString,
-    assigneeId: parseAsString,
+    programId: parseAsString,
+    assignedId: parseAsString,
   });
 };
 
-export default useTaskTableFilter;
+export default useEventTableFilter;

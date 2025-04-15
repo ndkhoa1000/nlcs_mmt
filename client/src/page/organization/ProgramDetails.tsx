@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import ProgramAnalytics from "@/components/organization/program/program-analytics";
 import ProgramHeader from "@/components/organization/program/program-header";
-import TaskTable from "@/components/organization/task/task-table";
+import TaskTable from "@/components/organization/event/event-table";
 
 const ProgramDetails = () => {
   return (

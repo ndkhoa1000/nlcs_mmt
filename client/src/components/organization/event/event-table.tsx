@@ -7,29 +7,56 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { DataTableFacetedFilter } from "./table/table-faceted-filter";
 import { priorities, statuses } from "./table/data";
-import useTaskTableFilter from "@/hooks/use-task-table-filter";
+import useEventTableFilter from "@/hooks/use-task-table-filter";
+import { useQuery } from "@tanstack/react-query";
+import useOrgId from "@/hooks/use-org-id";
+import { getAllEventsInOrgQueryFn } from "@/lib/api";
+import { EventType } from "@/types/api.type";
 
-type Filters = ReturnType<typeof useTaskTableFilter>[0];
-type SetFilters = ReturnType<typeof useTaskTableFilter>[1];
+type Filters = ReturnType<typeof useEventTableFilter>[0];
+type SetFilters = ReturnType<typeof useEventTableFilter>[1];
 
 interface DataTableFilterToolbarProps {
   isLoading?: boolean;
-  projectId?: string;
+  programId?: string;
   filters: Filters;
   setFilters: SetFilters;
 }
-// TODO: need to define pagination and filter in backend for apply it on frontend
 const TaskTable = () => {
   const param = useParams();
-  const projectId = param.projectId as string;
-
+  const programId = param.projectId as string;
+  const orgId = useOrgId();
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const [filters, setFilters] = useTaskTableFilter();
-  const columns = getColumns(projectId);
+  const [filters, setFilters] = useEventTableFilter();
+  const columns = getColumns(programId);
 
-  const totalCount = 0;
+  const { data, isLoading } = useQuery({
+    queryKey: [
+      "all-events",
+      orgId,
+      pageSize,
+      pageNumber,
+      filters,
+      programId,
+    ],
+    queryFn: () =>
+      getAllEventsInOrgQueryFn({
+        orgId,
+        keyword: filters.keyword ?? undefined,
+        priority: filters.priority ? filters.priority.split(",") : undefined,
+        status: filters.status ? filters.status.split(",") : undefined,
+        programId: programId || (filters.programId ?? undefined),
+        assignedTo: filters.assignedId ? filters.assignedId.split(",") : undefined,
+        pageNumber,
+        pageSize,
+      }),
+    staleTime: 0,
+  });
+
+  const events: EventType[] = data?.events || [];
+  const totalCount = data?.pagination.totalCount || 0;
 
   const handlePageChange = (page: number) => {
     setPageNumber(page);
@@ -44,7 +71,7 @@ const TaskTable = () => {
     <div className="w-full relative">
       <DataTable
         isLoading={false}
-        data={[]}
+        data={events}
         columns={columns}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
@@ -53,22 +80,22 @@ const TaskTable = () => {
           pageNumber,
           pageSize,
         }}
-        filtersToolbar={
-          <DataTableFilterToolbar
-            isLoading={false}
-            projectId={projectId}
-            filters={filters}
-            setFilters={setFilters}
-          />
-        }
+        // filtersToolbar={
+        //   <DataTableFilterToolbar
+        //     isLoading={false}
+        //     projectId={projectId}
+        //     filters={filters}
+        //     setFilters={setFilters}
+        //   />
+        // }
       />
     </div>
   );
 };
-
+//NOTE: skip implement filter
 const DataTableFilterToolbar: FC<DataTableFilterToolbarProps> = ({
   isLoading,
-  projectId,
+  programId: projectId,
   filters,
   setFilters,
 }) => {
