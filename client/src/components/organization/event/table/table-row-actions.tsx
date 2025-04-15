@@ -16,6 +16,7 @@ import useOrgId from "@/hooks/use-org-id";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteEventMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
+import EditEventDialog from "../edit-event-dialog";
 
 interface DataTableRowActionsProps {
   row: Row<TaskType>;
@@ -28,9 +29,10 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const orgId = useOrgId();
 
   const { mutate, isPending } = useMutation({
-    mutationFn:({orgId, eventId}:{ orgId: string;
-      eventId: string;}) => deleteEventMutationFn(orgId,eventId),
+    mutationFn: ({ orgId, eventId }: { orgId: string; eventId: string }) => 
+      deleteEventMutationFn(orgId, eventId),
   });
+  
   const eventId = row.original._id as string;
   const eventTitle = row.original.title;
 
@@ -43,7 +45,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       {
         onSuccess: (data) => {
           queryClient.invalidateQueries({
-            queryKey: ["all-events", orgId],
+            queryKey: ["events", orgId],
           });
           toast({
             title: "Success",
@@ -77,8 +79,8 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem 
-          className="cursor-pointer"
-          onClick={() => console.log("")}
+            className="cursor-pointer"
+            onClick={() => setOpenEditDialog(true)}
           >
             Edit Event 
           </DropdownMenuItem>
@@ -92,6 +94,16 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {/* Edit Event Dialog */}
+      {openEditDialog && (
+        <EditEventDialog
+          isOpen={openEditDialog}
+          onClose={() => setOpenEditDialog(false)}
+          eventId={eventId}
+        />
+      )}
+
+      {/* Delete Confirmation Dialog */}
       <ConfirmDialog
         isOpen={openDeleteDialog}
         isLoading={isPending}
