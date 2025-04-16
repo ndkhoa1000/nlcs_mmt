@@ -20,6 +20,9 @@ import { priorities, statuses } from "./data";
 import { EventType } from "@/types/api.type";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Clock } from "lucide-react";
+import useOrgId from "@/hooks/use-org-id";
+import { getProgramByIdQueryFn } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 
 export const getColumns = (programId?: string): ColumnDef<EventType>[] => {
   const columns: ColumnDef<EventType>[] = [
@@ -71,16 +74,29 @@ export const getColumns = (programId?: string): ColumnDef<EventType>[] => {
               <DataTableColumnHeader column={column} title="Program" />
             ),
             cell: ({ row }: { row: Row<EventType> }) => {
-              const program = row.original.program;
-
-              if (!program) {
-                return null;
+              const programId = row.original.program;
+              //REVIEW: temp fix to display porgramName on table, 
+              //REVIEW: need to modify getAllEvent to populate programId with program.name for better performance
+              const orgId = useOrgId();
+              const { data, isPending } = useQuery({
+                queryKey:["cell-program",programId],
+                  queryFn: () =>
+                    getProgramByIdQueryFn(
+                      orgId,
+                      programId,
+                    ),
+                  staleTime: Infinity,
+                  enabled: !!programId,
+                });
+              const programName = data?.program?.name;
+              if (isPending || !programId ) {
+                return <span>--</span>;
               }
 
               return (
                 <div className="flex items-center gap-2">
                   <span className="block capitalize truncate w-[100px] text-ellipsis">
-                    {program.name}
+                    {programName}
                   </span>
                 </div>
               );

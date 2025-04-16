@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CalendarIcon, ChevronsUpDown, Loader, Plus, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Form,
   FormControl,
@@ -33,19 +33,14 @@ import { getAvatarFallbackText, transformOptions } from "@/lib/helper";
 import useOrgId from "@/hooks/use-org-id";
 import { EventPriorityEnum, EventStatusEnum, eventCategoriesEnums, eventCategoryEnumType } from "@/constant";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { 
-  getEventByIdQueryFn, 
-  getAllMemberInOrganizationQueryFn, 
-  getProgramsInOrganizationQueryFn,
-  updateEventMutationFn
-} from "@/lib/api";
+import { createEventMutationFn, getAllMemberInOrganizationQueryFn, getProgramsInOrganizationQueryFn } from "@/lib/api";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
 import { useAuthContext } from "@/context/auth-provider";
 import { Permissions } from "@/constant";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getAvatarColor } from "@/lib/helper";
-import { createEventSchema as updateEventSchema } from "@/validation/event.validation";
+import { createEventSchema } from "@/validation/event.validation";
 import { Command, CommandEmpty, CommandGroup, CommandInput } from "@/components/ui/command";
 import { Badge } from "@/components/ui/badge";
 
@@ -55,37 +50,29 @@ const FORM_STEPS = {
   ADVANCED_DETAILS: 1,
 };
 
-export default function EditEventForm(props: {
-  eventId: string;
+export default function CreateEventForm(props: {
+  programId?: string;
   onClose: () => void;
 }) {
-  const { eventId, onClose } = props;
+  const { programId, onClose } = props;
   const orgId = useOrgId();
   const queryClient = useQueryClient();
   const { hasPermission } = useAuthContext();
-  const canEditEvent = hasPermission(Permissions.EDIT_EVENT);
+  const canCreateEvent = hasPermission(Permissions.CREATE_EVENT);
   
   // Track current form step
   const [currentStep, setCurrentStep] = useState(FORM_STEPS.BASIC_INFO);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Get event data
-  const { data: eventData, isLoading: eventLoading } = useQuery({
-    queryKey: ["event", eventId, orgId],
-    queryFn: () => getEventByIdQueryFn(orgId, eventId),
-    enabled: !!eventId && !!orgId,
-  });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: z.infer<typeof updateEventSchema>) => 
-      updateEventMutationFn(orgId, eventId, data),
+    mutationFn: (data: z.infer<typeof createEventSchema>) => 
+      createEventMutationFn(orgId, data),
   });
 
   // Get programs from API
   const { data: programsData, isLoading: isProgramsLoading } = useQuery({
     queryKey: ["allPrograms", orgId],
     queryFn: () => getProgramsInOrganizationQueryFn({ orgId, pageSize: 100 }),
-    enabled: !!orgId,
+    enabled: !programId && !!orgId,
   });
   
   // Program options for select dropdown
@@ -102,18 +89,18 @@ export default function EditEventForm(props: {
   });
 
   // Initialize form
-  const form = useForm<z.infer<typeof updateEventSchema>>({
-    resolver: zodResolver(updateEventSchema),
+  const form = useForm<z.infer<typeof createEventSchema>>({
+    resolver: zodResolver(createEventSchema),
     defaultValues: {
       title: "",
       description: "",
-      program: "",
+      program: programId || "",
       category: [],
       location: "",
       status: EventStatusEnum.PENDING,
       priority: EventPriorityEnum.MEDIUM,
       assignedTo: [],
-      cohost: [],
+      cohost: [], // Not implemented yet
       requiredVolunteer: 0,
       registrationDeadline: undefined,
       startTime: undefined,
@@ -123,42 +110,13 @@ export default function EditEventForm(props: {
     },
   });
 
-  // Update form values when event data is available
-  useEffect(() => {
-    if (eventData?.event) {
-      const event = eventData.event;
-      
-      setIsLoading(true);
-      form.reset({
-        title: event.title,
-        description: event.description || "",
-        program: event.program?._id || "",
-        category: event.category?.filter((cat): cat is eventCategoryEnumType => 
-          Object.values(eventCategoriesEnums).includes(cat as eventCategoryEnumType)
-        ) || [],
-        location: event.location,
-        status: event.status,
-        priority: event.priority,
-        assignedTo: event.assignedTo?.map(user => user._id) || [],
-        cohost: event.cohost || [],
-        requiredVolunteer: event.requiredVolunteer,
-        registrationDeadline: event.registrationDeadline ? new Date(event.registrationDeadline) : undefined,
-        startTime: event.startTime ? new Date(event.startTime) : undefined,
-        endTime: event.endTime ? new Date(event.endTime) : undefined,
-        documents: event.documents || [],
-        needTraining: event.needTraining,
-      });
-      setIsLoading(false);
-    }
-  }, [eventData, form]);
-
   // Process enums for select fields
   const statusOptions = transformOptions(Object.values(EventStatusEnum));
   const priorityOptions = transformOptions(Object.values(EventPriorityEnum));
   const categoryOptions = transformOptions(Object.values(eventCategoriesEnums));
 
   // Form submission handler
-  const onSubmit = (values: z.infer<typeof updateEventSchema>) => {
+  const onSubmit = (values: z.infer<typeof createEventSchema>) => {
     if (isPending) return;
     
     const formData = {
@@ -166,14 +124,14 @@ export default function EditEventForm(props: {
       program: values.program || undefined,
     };
     
-    console.log("Updating event with data:", formData);
+    console.log("Creating event with data:", formData);
     
     mutate(formData, {
       onSuccess: (data) => {
-        console.log("update event data res:", data);
+        console.log("create event data res:", data);
         toast({
           title: "Success",
-          description: "Event updated successfully",
+          description: "Event created successfully",
           variant: "success",
         });
         
@@ -181,25 +139,9 @@ export default function EditEventForm(props: {
         queryClient.invalidateQueries({
           queryKey: ["events", orgId]
         });
-        
         queryClient.invalidateQueries({
           queryKey: ["recentEvents", orgId]
         });
-        
-        queryClient.invalidateQueries({
-          queryKey: ["event", eventId]
-        });
-        
-        // Also invalidate old program data if the program was changed
-        const oldProgramId = eventData?.event?.program?._id;
-        if (oldProgramId && oldProgramId !== values.program) {
-          queryClient.invalidateQueries({
-            queryKey: ["program-events", oldProgramId]
-          });
-          queryClient.invalidateQueries({
-            queryKey: ["program-analysis", oldProgramId]
-          });
-        }
         
         if (values.program) {
           queryClient.invalidateQueries({
@@ -215,7 +157,7 @@ export default function EditEventForm(props: {
       onError: (error) => {
         toast({
           title: "Error",
-          description: error.message || "Failed to update event",
+          description: error.message || "Failed to create event",
           variant: "destructive"
         });
       },
@@ -274,14 +216,6 @@ export default function EditEventForm(props: {
     </div>
   );
 
-  if (eventLoading || isLoading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <Loader className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
-
   return (
     <div className="w-full h-auto max-w-full">
       <div className="h-full">
@@ -290,10 +224,10 @@ export default function EditEventForm(props: {
             className="text-xl tracking-[-0.16px] dark:text-[#fcfdffef] font-semibold mb-1
            text-center sm:text-left"
           >
-            Edit Event
+            Create Event
           </h1>
           <p className="text-muted-foreground text-sm leading-tight">
-            Update event details and management information
+            Organize and manage volunteers, and resources for your organization
           </p>
         </div>
         
@@ -319,7 +253,7 @@ export default function EditEventForm(props: {
                             <Input
                               placeholder="Beach Cleanup Day"
                               className="!h-[48px]"
-                              disabled={!canEditEvent}
+                              disabled={!canCreateEvent}
                               {...field}
                             />
                           </FormControl>
@@ -346,7 +280,7 @@ export default function EditEventForm(props: {
                             <Textarea 
                               rows={3} 
                               placeholder="Describe what the event is about" 
-                              disabled={!canEditEvent}
+                              disabled={!canCreateEvent}
                               {...field} 
                             />
                           </FormControl>
@@ -370,7 +304,7 @@ export default function EditEventForm(props: {
                             <Input
                               placeholder="123 Beach Road, Oceanside"
                               className="!h-[48px]"
-                              disabled={!canEditEvent}
+                              disabled={!canCreateEvent}
                               {...field}
                             />
                           </FormControl>
@@ -383,44 +317,46 @@ export default function EditEventForm(props: {
                   {/* Two-column layout for Program and Required Volunteers */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Program Selection */}
-                    <FormField
-                      control={form.control}
-                      name="program"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Program</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value || ""}
-                            disabled={!canEditEvent}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select a program" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {isProgramsLoading && (
-                                <div className="my-2 flex justify-center">
-                                  <Loader className="w-4 h-4 animate-spin" />
+                    {!programId && (
+                      <FormField
+                        control={form.control}
+                        name="program"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Program</FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value ?? undefined}
+                              disabled={!canCreateEvent || !!programId}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a program" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {isProgramsLoading && (
+                                  <div className="my-2 flex justify-center">
+                                    <Loader className="w-4 h-4 animate-spin" />
+                                  </div>
+                                )}
+                                <div className="w-full max-h-[200px] overflow-y-auto scrollbar">
+                                  {programOptions?.map((option) => (
+                                    <SelectItem
+                                      key={option.value}
+                                      value={option.value}
+                                    >
+                                      {option.label}
+                                    </SelectItem>
+                                  ))}
                                 </div>
-                              )}
-                              <div className="w-full max-h-[200px] overflow-y-auto scrollbar">
-                                {programOptions?.map((option) => (
-                                  <SelectItem
-                                    key={option.value}
-                                    value={option.value}
-                                  >
-                                    {option.label}
-                                  </SelectItem>
-                                ))}
-                              </div>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
 
                     {/* Required Volunteer Count */}
                     <FormField
@@ -436,9 +372,8 @@ export default function EditEventForm(props: {
                               type="number"
                               min={0}
                               className="!h-[48px]"
-                              disabled={!canEditEvent}
+                              disabled={!canCreateEvent}
                               {...field}
-                              value={field.value || 0}
                               onChange={e => {
                                 return field.onChange(parseInt(e.target.value) || 0)}}
                             />
@@ -467,7 +402,7 @@ export default function EditEventForm(props: {
                                     "w-full pl-3 text-left font-normal",
                                     !field.value && "text-muted-foreground"
                                   )}
-                                  disabled={!canEditEvent}
+                                  disabled={!canCreateEvent}
                                 >
                                   {field.value ? (
                                     format(field.value, "PPP")
@@ -508,7 +443,7 @@ export default function EditEventForm(props: {
                                     "w-full pl-3 text-left font-normal",
                                     !field.value && "text-muted-foreground"
                                   )}
-                                  disabled={!canEditEvent}
+                                  disabled={!canCreateEvent}
                                 >
                                   {field.value ? (
                                     format(field.value, "PPP")
@@ -524,7 +459,7 @@ export default function EditEventForm(props: {
                                 mode="single"
                                 selected={field.value}
                                 onSelect={field.onChange}
-                                disabled={!canEditEvent}
+                                disabled={!canCreateEvent}
                                 initialFocus
                               />
                             </PopoverContent>
@@ -550,7 +485,7 @@ export default function EditEventForm(props: {
                                     "w-full pl-3 text-left font-normal",
                                     !field.value && "text-muted-foreground"
                                   )}
-                                  disabled={!canEditEvent || !form.getValues().startTime}
+                                  disabled={!canCreateEvent || !form.getValues().startTime}
                                 >
                                   {field.value ? (
                                     format(field.value, "PPP")
@@ -568,7 +503,7 @@ export default function EditEventForm(props: {
                                 onSelect={field.onChange}
                                 disabled={(date) => {
                                   const startDate = form.getValues().startTime;
-                                  return !canEditEvent || !startDate || date < startDate;
+                                  return !canCreateEvent || !startDate || date < startDate;
                                 }}
                                 initialFocus
                                 fromDate={form.getValues().startTime}
@@ -587,7 +522,7 @@ export default function EditEventForm(props: {
                     type="button" 
                     onClick={() => setCurrentStep(FORM_STEPS.ADVANCED_DETAILS)}
                     className="mt-4"
-                    disabled={!canEditEvent}
+                    disabled={!canCreateEvent}
                   >
                     Next
                   </Button>
@@ -611,8 +546,8 @@ export default function EditEventForm(props: {
                           <FormLabel>Status</FormLabel>
                           <Select
                             onValueChange={field.onChange}
-                            value={field.value}
-                            disabled={!canEditEvent}
+                            defaultValue={field.value}
+                            disabled={!canCreateEvent}
                           >
                             <FormControl>
                               <SelectTrigger>
@@ -648,8 +583,8 @@ export default function EditEventForm(props: {
                           <FormLabel>Priority</FormLabel>
                           <Select
                             onValueChange={field.onChange}
-                            value={field.value}
-                            disabled={!canEditEvent}
+                            defaultValue={field.value}
+                            disabled={!canCreateEvent}
                           >
                             <FormControl>
                               <SelectTrigger>
@@ -696,7 +631,7 @@ export default function EditEventForm(props: {
                                   "w-full justify-between",
                                   !field.value?.length && "text-muted-foreground"
                                 )}
-                                disabled={!canEditEvent}
+                                disabled={!canCreateEvent}
                               >
                                 {field.value?.length
                                   ? `${field.value.length} categories selected`
@@ -715,7 +650,7 @@ export default function EditEventForm(props: {
                                     <div key={category.value} className="flex items-center space-x-2 p-2 rounded hover:bg-muted">
                                       <Checkbox
                                         id={`category-${category.value}`}
-                                        disabled={!canEditEvent}
+                                        disabled={!canCreateEvent}
                                         checked={field.value?.includes(category.value as eventCategoryEnumType)}
                                         onCheckedChange={(checked) => {
                                           if (checked) {
@@ -775,7 +710,7 @@ export default function EditEventForm(props: {
                                   "w-full justify-between",
                                   !field.value?.length && "text-muted-foreground"
                                 )}
-                                disabled={!canEditEvent}
+                                disabled={!canCreateEvent}
                               >
                                 {field.value?.length
                                   ? `${field.value.length} members assigned`
@@ -807,7 +742,7 @@ export default function EditEventForm(props: {
                                         >
                                           <Checkbox 
                                             id={`member-${member.userId._id}`}
-                                            disabled={!canEditEvent}
+                                            disabled={!canCreateEvent}
                                             checked={field.value?.includes(member.userId._id)}
                                             onCheckedChange={(checked) => {
                                               if (checked) {
@@ -849,7 +784,7 @@ export default function EditEventForm(props: {
                                   <X 
                                     className="h-3 w-3 cursor-pointer" 
                                     onClick={() => field.onChange((field.value !== undefined) && field.value.filter(id => id !== memberId))}
-                                  />
+                                />
                                 </Badge>
                               );
                             })}
@@ -913,7 +848,7 @@ export default function EditEventForm(props: {
                                 }}
                                 className="!h-[40px]"
                                 placeholder="Document URL or reference"
-                                disabled={!canEditEvent}
+                                disabled={!canCreateEvent}
                               />
                               <Button
                                 type="button"
@@ -924,7 +859,7 @@ export default function EditEventForm(props: {
                                   newDocuments.splice(index, 1);
                                   field.onChange(newDocuments);
                                 }}
-                                disabled={!canEditEvent}
+                                disabled={!canCreateEvent}
                               >
                                 <X className="h-4 w-4" />
                               </Button>
@@ -938,7 +873,7 @@ export default function EditEventForm(props: {
                               field.onChange([...(field.value || []), ""]);
                             }}
                             className="w-full flex items-center gap-1"
-                            disabled={!canEditEvent}
+                            disabled={!canCreateEvent}
                           >
                             <Plus className="h-4 w-4" /> Add Document
                           </Button>
@@ -958,7 +893,7 @@ export default function EditEventForm(props: {
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            disabled={!canEditEvent}
+                            disabled={!canCreateEvent}
                           />
                         </FormControl>
                         <div className="space-y-1 leading-none">
@@ -983,7 +918,7 @@ export default function EditEventForm(props: {
                     Back
                   </Button>
                   
-                  {canEditEvent && (
+                  {canCreateEvent && (
                     <Button
                       className="shrink-0 flex h-[40px] text-white font-semibold"
                       type="submit"
@@ -992,10 +927,10 @@ export default function EditEventForm(props: {
                       {isPending ? (
                         <>
                           <Loader className="mr-2 h-4 w-4 animate-spin" />
-                          Updating...
+                          Creating...
                         </>
                       ) : (
-                        "Update Event"
+                        "Create Event"
                       )}
                     </Button>
                   )}

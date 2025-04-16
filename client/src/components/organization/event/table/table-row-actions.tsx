@@ -35,6 +35,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   
   const eventId = row.original._id as string;
   const eventTitle = row.original.title;
+  const programId = row.original.program?._id;
 
   const handleConfirm = () => {
     mutate(
@@ -44,9 +45,23 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       },
       {
         onSuccess: (data) => {
+          // Fix: Use consistent query keys to match the table component
           queryClient.invalidateQueries({
             queryKey: ["events", orgId],
           });
+          queryClient.invalidateQueries({
+            queryKey: ["recentEvents", orgId],
+          });
+          // Also invalidate specific program events if applicable
+          if (programId) {
+            queryClient.invalidateQueries({
+              queryKey: ["program-events", programId],
+            });
+            queryClient.invalidateQueries({
+              queryKey: ["program-analysis", programId],
+            });
+          }
+          
           toast({
             title: "Success",
             description: data.message,

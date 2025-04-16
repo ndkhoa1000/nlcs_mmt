@@ -10,7 +10,6 @@ const ProgramDetails = () => {
       <div className="space-y-5">
         <ProgramAnalytics />
         <Separator />
-        {/* {Task Table} */}
         <TaskTable />
       </div>
     </div>

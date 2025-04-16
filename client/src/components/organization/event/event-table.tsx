@@ -24,7 +24,8 @@ interface DataTableFilterToolbarProps {
 }
 const TaskTable = () => {
   const param = useParams();
-  const programId = param.projectId as string;
+  const programId = param.programId as string;
+
   const orgId = useOrgId();
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -32,9 +33,10 @@ const TaskTable = () => {
   const [filters, setFilters] = useEventTableFilter();
   const columns = getColumns(programId);
 
+  // Fix: Standardize query key
   const { data, isLoading } = useQuery({
     queryKey: [
-      "all-events",
+      "events",
       orgId,
       pageSize,
       pageNumber,
@@ -70,7 +72,7 @@ const TaskTable = () => {
   return (
     <div className="w-full relative">
       <DataTable
-        isLoading={false}
+        isLoading={isLoading}
         data={events}
         columns={columns}
         onPageChange={handlePageChange}
